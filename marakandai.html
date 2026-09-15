@@ -75,7 +75,11 @@ input{font-family:inherit;}
 .hero-sec{position:sticky; top:0; z-index:1; height:100vh; overflow:hidden;}
 @supports (height:100dvh){ .hero-sec{height:100dvh;} }
 .hero-sticky{position:relative; height:100%; overflow:hidden; background:#1c2a4a;}
-.hero-model{position:absolute; inset:0; width:100%; height:100%; display:block; --poster-color:#1c2a4a;}
+/* touch-action:pan-y -- without this, model-viewer's touch-drag-to-orbit
+   swallows a single-finger swipe entirely, trapping mobile users on the
+   hero unable to scroll past it at all. This lets vertical swipes scroll
+   the page normally; horizontal drag still orbits the model. */
+.hero-model{position:absolute; inset:0; width:100%; height:100%; display:block; --poster-color:#1c2a4a; touch-action:pan-y;}
 .hero-copy{
   position:absolute; z-index:5; left:0; right:0; top:16vh; margin:0;
   text-align:center; pointer-events:none;
@@ -90,7 +94,48 @@ input{font-family:inherit;}
   display:flex; align-items:center; justify-content:space-between;
   padding:22px 36px;
 }
-.landing-brand{display:flex;align-items:center;gap:10px;}
+.landing-brand{display:flex;align-items:center;gap:13px;position:relative;}
+/* same control, same corner as the research sheet -- light, because this nav
+   sits over the dark hero rather than on paper */
+.lmenu-btn{
+  display:flex; flex-direction:column; justify-content:center; gap:4px;
+  width:26px; height:26px; padding:0; margin:0;
+  background:none; border:none; cursor:pointer;
+}
+.lmenu-btn span{
+  display:block; height:1.5px; width:18px; background:#f4f9ff;
+  box-shadow:0 1px 6px rgba(0,0,0,.45);
+  transition:transform .22s cubic-bezier(.22,1,.36,1), opacity .16s, background .16s;
+}
+.lmenu-btn:hover span{background:#7fb0ff;}
+.lmenu-btn[aria-expanded="true"] span:nth-child(1){transform:translateY(5.5px) rotate(45deg);}
+.lmenu-btn[aria-expanded="true"] span:nth-child(2){opacity:0;}
+.lmenu-btn[aria-expanded="true"] span:nth-child(3){transform:translateY(-5.5px) rotate(-45deg);}
+
+/* anchored to the brand, not the nav, so it stays under the button whatever
+   the nav's responsive padding is */
+.lmenu{
+  position:absolute; top:calc(100% + 16px); left:0; min-width:212px;
+  background:rgba(13,24,42,.9); backdrop-filter:blur(16px);
+  border:1px solid rgba(244,249,255,.18); border-radius:4px;
+  display:flex; flex-direction:column; overflow:hidden;
+  box-shadow:0 24px 50px -20px rgba(0,0,0,.7);
+}
+.lmenu[hidden]{display:none;}   /* author display rule outranks the UA [hidden] */
+.lmenu-item{
+  padding:12px 16px; text-align:left; text-decoration:none;
+  background:none; border:none; border-top:1px solid rgba(244,249,255,.1);
+  font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:rgba(244,249,255,.78); cursor:pointer;
+  transition:background .16s, color .16s, padding-left .16s;
+}
+.lmenu-item:first-child{border-top:none;}
+.lmenu-item:hover{background:rgba(244,249,255,.09); color:#fff; padding-left:20px;}
+.lmenu-item.cross{
+  color:#f4f9ff; display:flex; align-items:center; gap:9px;
+  border-bottom:1px solid rgba(244,249,255,.2);
+}
+.lmenu-item.cross .ar{color:#e5b34a;}
 .landing-wordmark{font-family:var(--display);font-weight:800;font-size:16px;color:#f4f9ff;letter-spacing:.02em;text-shadow:0 2px 12px rgba(0,0,0,.4);}
 .landing-links{display:flex; align-items:center; gap:30px;}
 .landing-link{
@@ -389,7 +434,9 @@ input{font-family:inherit;}
 .landing-cta:active{transform:translateY(0);}
 .cta-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:72px; max-width:920px;}
 @media (max-width:900px){ .cta-cards{grid-template-columns:1fr;} }
-.cta-card{display:block; cursor:pointer; border:none; background:transparent; padding:0; text-align:left;}
+/* text-decoration:none so the card works as an <a> -- the underline is meant
+   to appear on the label on hover, not across the whole card */
+.cta-card{display:block; cursor:pointer; border:none; background:transparent; padding:0; text-align:left; text-decoration:none; color:inherit;}
 .cta-card .cimg{position:relative; aspect-ratio:3/4; border-radius:10px; overflow:hidden; background:#1c2a4a;}
 .cta-card .cimg img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .3s ease;}
 .cta-card:hover .cimg img{transform:scale(1.045);}
@@ -486,6 +533,8 @@ input{font-family:inherit;}
 .console-sidebar.collapsed .sidebar-nav-item{justify-content:center; padding:9px;}
 .console-sidebar.collapsed .sidebar-history{display:none;}
 .console-sidebar.collapsed .sidebar-foot{align-items:center;}
+/* phone layout for the console lives in one block near the end of the
+   stylesheet -- see "PHONE LAYOUT" */
 
 .sidebar-head{display:flex; align-items:center; gap:10px; padding:2px 4px 16px;}
 .sidebar-toggle{
@@ -525,6 +574,16 @@ input{font-family:inherit;}
   color:var(--text-faint); padding:4px 10px 8px; flex-shrink:0;
 }
 .sidebar-history-list{flex:1; min-height:0; overflow-y:auto; display:flex; flex-direction:column; gap:1px;}
+.sidebar-history-head{display:flex; align-items:baseline; justify-content:space-between; gap:8px;}
+.history-clear-btn{
+  border:none; background:transparent; cursor:pointer; padding:2px 4px;
+  font-family:var(--sans); font-size:11px; color:var(--text-faint);
+  border-radius:5px; transition:color .15s ease, background .15s ease;
+}
+.history-clear-btn:hover{color:var(--danger); background:rgba(192,57,43,.08);}
+.history-clear-btn[hidden]{display:none;}
+/* while it is asking for confirmation it must not look like a stray label */
+.history-clear-btn.confirm{color:var(--danger); font-weight:600;}
 .sidebar-history-item{
   display:block; width:100%; box-sizing:border-box; text-align:left;
   border:none; background:transparent; color:var(--text-dim);
@@ -596,8 +655,54 @@ input{font-family:inherit;}
 
 /* Marketplace: 3-column */
 #panel-map{display:none;}
-#panel-map.active{display:grid;grid-template-columns:1fr 340px;height:100%;}
-@media (max-width:1080px){ #panel-map.active{grid-template-columns:1fr 300px;} }
+/* the dossier width is a variable so the divider between map and dossier can
+   be dragged -- see .col-resizer */
+/* Collapsed until a listing is selected -- the same idea as the phone sheet.
+   An empty panel explaining that it is empty is not worth a third of the
+   screen, so the map simply gets the whole panel until there is something
+   to show. */
+#panel-map.active{
+  display:grid; grid-template-columns:1fr 0px;
+  height:100%; position:relative;
+  transition:grid-template-columns .28s cubic-bezier(.22,1,.36,1);
+}
+#panel-map.active.has-dossier{grid-template-columns:1fr var(--dossier-w, 340px);}
+/* a grid item will not shrink past its own content unless told: without
+   min-width:0 the "collapsed" 0px track still renders ~37px of dossier */
+#panel-map.active > .col-dossier{min-width:0; overflow-x:hidden;}
+/* padding does not shrink with the track, so 18px either side kept the
+   "collapsed" column 37px wide -- zero it while it is closed */
+#panel-map.active:not(.has-dossier) .col-dossier{
+  visibility:hidden; padding-left:0; padding-right:0; border-left:none;
+}
+#panel-map.active:not(.has-dossier) .col-resizer{display:none;}
+/* no animation mid-drag, or the column lags the pointer */
+#panel-map.active.resizing{transition:none;}
+@media (max-width:1080px){ #panel-map.active{--dossier-w:300px;} }
+
+/* close control, so a dossier opened on desktop can be dismissed */
+.dossier-close{
+  position:sticky; top:0; align-self:flex-end; z-index:3;
+  width:26px; height:26px; margin:-4px -4px 2px 0; flex:none;
+  border:none; background:var(--panel); color:var(--text-faint);
+  border-radius:6px; cursor:pointer; font-size:14px; line-height:1;
+  display:grid; place-items:center;
+  transition:color .15s ease, background .15s ease;
+}
+.dossier-close:hover{color:var(--text); background:var(--bg);}
+
+.col-resizer{
+  position:absolute; top:0; bottom:0; right:var(--dossier-w, 340px);
+  width:10px; margin-right:-5px; z-index:15;
+  cursor:col-resize; touch-action:none;
+}
+/* a hairline that only shows itself on approach, so the seam stays quiet */
+.col-resizer::after{
+  content:''; position:absolute; top:0; bottom:0; left:4px; width:2px;
+  background:transparent; transition:background .15s ease;
+}
+.col-resizer:hover::after{background:rgba(43,95,176,.35);}
+.col-resizer.dragging::after{background:var(--blue);}
 
 /* just an input + a round search button, centered at the bottom of the
    map -- the example/parsed-filter UI stays in the DOM (.map-search-aux)
@@ -683,7 +788,9 @@ input{font-family:inherit;}
 @keyframes model-spin{ to{ transform:rotate(360deg); } }
 @media (prefers-reduced-motion:reduce){ .model-spinner{animation:none;} }
 .map-legend{
-  position:absolute; bottom:12px; left:12px; z-index:3;
+  /* top-left: the bottom of the map belongs to the floating search, and the
+     top-right to maplibre's own zoom and compass controls */
+  position:absolute; top:12px; left:12px; z-index:3;
   background:rgba(255,251,244,.9); border:1px solid rgba(20,20,15,.14); border-radius:7px;
   padding:9px 12px; font-family:var(--mono); font-size:10.5px; color:#4a4436;
   display:flex; flex-direction:column; gap:5px;
@@ -704,7 +811,9 @@ input{font-family:inherit;}
 .maplibregl-popup-close-button{color:#7a7260 !important;}
 
 .col-dossier{border-left:1px solid var(--border);background:var(--panel);overflow-y:auto;padding:18px;display:flex;flex-direction:column;}
-.dossier-empty-state{color:var(--text-faint);font-size:13px;line-height:1.6;padding-top:40px;text-align:center;margin:auto;}
+/* the drag bar is a phone affordance only; on desktop this is a fixed column */
+.sheet-handle{display:none;}
+.dossier-empty-state{display:none; color:var(--text-faint);font-size:13px;line-height:1.6;padding-top:40px;text-align:center;margin:auto;}
 
 /* --- dossier chat: Massagetae introduces the listing, then answers
    follow-ups about it specifically --- */
@@ -835,6 +944,128 @@ input{font-family:inherit;}
 .modal-card p{font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:0 0 10px;}
 .modal-card b{color:var(--gold);}
 .modal-close{margin-top:8px;padding:9px 16px;border-radius:7px;border:1px solid var(--border-2);background:transparent;color:var(--text-dim);font-family:var(--mono);font-size:11.5px;cursor:pointer;}
+
+/* ============================================================
+   PHONE LAYOUT
+   A vertical rail plus a side-by-side map/dossier does not survive a
+   390px screen: the rail eats 15% of the width, the map and the dossier
+   each get half a column, and the floating search and the legend end up
+   stacked on the same corner. On a phone the nav becomes a bottom bar
+   the thumb can reach, the map sits above the dossier, and the map's
+   floating controls move apart.
+   ============================================================ */
+@media (max-width:700px){
+  /* --- the hero must never eat a swipe ---
+     model-viewer attaches NON-PASSIVE touch handlers and orbits on drag, so
+     touch-action:pan-y alone does not save you: its preventDefault still wins
+     and the swipe spins the model instead of scrolling the page. On a phone
+     the hero model is display-only -- it still renders and auto-rotates, it
+     simply stops taking the touch. */
+  .hero-model{pointer-events:none;}
+  /* the landing scrolls inside its own container, so give that container
+     momentum scrolling and stop the scroll chaining to the page behind it */
+  #view-landing{-webkit-overflow-scrolling:touch; overscroll-behavior-y:contain;}
+
+  /* --- nav: left rail becomes a bottom bar, out of the layout flow --- */
+  .console-sidebar{
+    position:fixed; left:0; right:0; bottom:0; top:auto;
+    width:auto; height:56px;
+    flex-direction:row; align-items:center;
+    padding:0 6px; gap:2px;
+    border-right:none; border-top:1px solid var(--border);
+    box-shadow:0 -6px 20px rgba(28,42,74,.08);
+    z-index:40;
+  }
+  .console-sidebar.collapsed{width:auto; padding:0 6px;}
+  .console-sidebar .sidebar-head,
+  .console-sidebar .sidebar-new-btn,
+  .console-sidebar .sidebar-history,
+  .console-sidebar .sidebar-toggle{display:none;}
+  .console-sidebar .sidebar-label{display:none;}
+
+  .sidebar-nav{
+    flex:1; display:flex; flex-direction:row; align-items:center; gap:2px;
+    overflow:visible; margin:0; padding:0;
+  }
+  .sidebar-nav-item{
+    flex:1 1 0; min-width:0; justify-content:center;
+    padding:9px 0; margin:0; border-radius:9px;
+  }
+  .sidebar-foot{
+    display:flex; flex-direction:row; align-items:center; gap:2px;
+    margin:0; padding:0 0 0 4px; border-top:none;
+    flex:0 0 auto;
+  }
+  .sidebar-foot .icon-btn{width:36px; height:36px; flex:none;}
+  /* the label is the button's only content, so give it a glyph of its own */
+  .sidebar-foot .back-btn{
+    width:36px; height:36px; flex:none; padding:0;
+    display:grid; place-items:center; border-radius:9px;
+  }
+  .sidebar-foot .back-btn::before{content:'\2190'; font-size:16px; line-height:1;}
+
+  /* content sits above the bar rather than behind it */
+  .console-main{padding-bottom:56px;}
+
+  /* --- the dossier becomes a draggable bottom sheet ---
+     An empty panel should not hold half the screen hostage: the map gets the
+     whole panel, and the dossier rises over it only once a listing is picked.
+     Drag the handle to resize it or throw it away. */
+  /* .has-dossier is a two-class selector, so it must be matched here or the
+     desktop two-column rule wins and shrinks the map behind the sheet */
+  #panel-map.active,
+  #panel-map.active.has-dossier{
+    grid-template-columns:1fr; grid-template-rows:1fr; position:relative;
+  }
+  #panel-map.active:not(.has-dossier) .col-dossier{visibility:visible;}
+  .col-resizer{display:none;}   /* the sheet is dragged by its own grab bar */
+  .col-dossier{
+    position:absolute; left:0; right:0; bottom:0; z-index:20;
+    height:88svh; max-height:88svh;
+    border-left:none; border-top:1px solid var(--border);
+    border-radius:16px 16px 0 0;
+    box-shadow:0 -14px 40px rgba(28,42,74,.22);
+    transform:translateY(100%);
+    padding:0 14px 14px; -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+    /* inert until a listing is actually chosen, otherwise the grab bar can be
+       dragged up to reveal an empty sheet over the map */
+    pointer-events:none;
+  }
+  .col-dossier.open{pointer-events:auto;}
+  /* the grab bar: the only part that takes the drag, so the body still scrolls */
+  .sheet-handle{
+    display:flex; align-items:center; justify-content:center;
+    position:sticky; top:0; z-index:2;
+    height:26px; margin:0 -14px 2px; flex:none;
+    background:var(--panel); border-radius:16px 16px 0 0;
+    touch-action:none; cursor:grab;
+  }
+  .sheet-handle:active{cursor:grabbing;}
+  .sheet-handle span{
+    display:block; width:40px; height:4px; border-radius:99px;
+    background:var(--text-faint); opacity:.5;
+  }
+  /* nothing is selected, so there is nothing to prompt about -- the closed
+     sheet is the prompt */
+  /* moved out of the phone block: the panel is collapsed when empty on every size */
+
+  /* --- floating map controls, tightened for a phone --- */
+  .map-legend{top:10px; left:10px; padding:7px 9px; font-size:9.5px; gap:4px;}
+  .map-search-float{
+    bottom:12px; width:calc(100% - 24px); max-width:none;
+    padding:5px 5px 5px 15px;
+  }
+  .map-toast{max-width:calc(100% - 28px); font-size:11.5px;}
+
+  /* two justified spans in a fixed 24px row overflow on a phone -- stack them
+     instead. The OSM credit stays: it is an attribution requirement. */
+  .app-footbar{
+    height:auto; min-height:24px;
+    flex-direction:column; align-items:flex-start; justify-content:center;
+    gap:2px; padding:5px 12px; font-size:9px; line-height:1.35;
+  }
+}
 </style>
 </head>
 <body>
@@ -859,6 +1090,9 @@ input{font-family:inherit;}
       </div>
       <nav class="landing-nav">
         <div class="landing-brand">
+          <button class="lmenu-btn" id="lmenu-btn" aria-label="Menu" aria-expanded="false" aria-controls="lmenu">
+            <span></span><span></span><span></span>
+          </button>
           <svg width="24" height="24" viewBox="0 0 26 26" fill="none">
             <line x1="6" y1="20" x2="13" y2="7" stroke="#7fb0ff" stroke-width="1.4"/>
             <line x1="20" y1="20" x2="13" y2="7" stroke="#7fb0ff" stroke-width="1.4"/>
@@ -868,9 +1102,14 @@ input{font-family:inherit;}
             <circle cx="20" cy="20" r="2.6" fill="#3d82ff"/>
           </svg>
           <span class="landing-wordmark">Massagetae</span>
+        <div class="lmenu" id="lmenu" hidden>
+          <a class="lmenu-item cross" href="tomyris.html">Tomyris <span class="ar">&rarr;</span></a>
+          <button class="lmenu-item js-enter-app" type="button">Demo</button>
+          <a class="lmenu-item" href="mailto:massagetaeuz@gmail.com">Contact</a>
+        </div>
         </div>
         <div class="landing-links">
-          <button class="landing-link js-enter-app">Try Massagetae Demo</button>
+          <button class="landing-link js-enter-app">Demo</button>
         </div>
       </nav>
       <div class="hero-copy">
@@ -947,7 +1186,7 @@ input{font-family:inherit;}
             <h3 class="case-h3">What are the main sources of market difficulties affecting ordinary consumers and private firms in Uzbekistan?</h3>
           </div>
           <div class="case-foot">
-            <a class="case-btn" href="#" data-todo="case-study-article">Read the case study <span class="arr">→</span></a>
+            <a class="case-btn" href="tomyris.html">Read the case study <span class="arr">→</span></a>
           </div>
         </article>
       </div>
@@ -971,10 +1210,10 @@ input{font-family:inherit;}
           <div class="cimg"><img src="theme-photos/cta-collab.jpg" loading="lazy" alt=""></div>
           <div class="clabel">For collaboration <span>→</span></div>
         </button>
-        <button class="cta-card" onclick="document.getElementById('info-modal').classList.add('show')">
+        <a class="cta-card" href="tomyris.html">
           <div class="cimg"><img src="https://i.ibb.co/hJDzsYhw/20260804-181108.jpg" loading="lazy" alt=""></div>
           <div class="clabel">Read our research publications <span>→</span></div>
-        </button>
+        </a>
       </div>
     </div>
   </section>
@@ -989,7 +1228,7 @@ input{font-family:inherit;}
         <span class="choynak-soon">Choynak: Coming soon</span>
       </div>
       <span class="choynak-tag choynak-tag-alt">For commercial professionals</span>
-      <button class="landing-cta js-enter-app">Try Massagetae Demo <span class="arr">→</span></button>
+      <button class="landing-cta js-enter-app">Demo <span class="arr">→</span></button>
     </div>
   </section>
 
@@ -1059,7 +1298,10 @@ input{font-family:inherit;}
     </nav>
 
     <div class="sidebar-history">
-      <div class="sidebar-history-label sidebar-label">Recent chats</div>
+      <div class="sidebar-history-head sidebar-label">
+        <span class="sidebar-history-label">Recent chats</span>
+        <button class="history-clear-btn" id="history-clear-btn" hidden>Clear</button>
+      </div>
       <div class="sidebar-history-list" id="sidebar-history-list"></div>
     </div>
 
@@ -1127,7 +1369,11 @@ input{font-family:inherit;}
         </div>
       </div>
 
+      <div class="col-resizer" id="col-resizer" role="separator" aria-orientation="vertical" aria-label="Resize dossier"></div>
+
       <div class="col-dossier" id="col-dossier">
+        <div class="sheet-handle" id="sheet-handle"><span></span></div>
+        <button class="dossier-close" id="dossier-close" title="Close" aria-label="Close listing">✕</button>
         <div class="dossier-empty-state" id="dossier-empty-state">Select a marker on the map — or a row in Auctions — and Massagetae will introduce the listing here: price, status, and everything else, then you can ask it follow-up questions.</div>
         <div class="dossier-chat" id="dossier-chat" style="display:none;">
           <div class="dossier-chat-head" id="dossier-chat-head"></div>
@@ -1499,10 +1745,28 @@ const HERO_DEFAULT_ORBIT = '20deg 75deg 105%';
   tryLoad();
 })();
 
+/* --- landing nav menu (mirrors the control on the research sheet) --- */
+(function(){
+  const btn = document.getElementById('lmenu-btn');
+  const menu = document.getElementById('lmenu');
+  if(!btn || !menu) return;
+  const set = open => { menu.hidden = !open; btn.setAttribute('aria-expanded', open?'true':'false'); };
+  btn.addEventListener('click', e => { e.stopPropagation(); set(menu.hidden); });
+  menu.addEventListener('click', e => { if(e.target.closest('.lmenu-item')) set(false); });
+  document.addEventListener('click', e => {
+    if(!menu.hidden && !menu.contains(e.target) && !btn.contains(e.target)) set(false);
+  });
+  addEventListener('keydown', e => { if(e.key==='Escape' && !menu.hidden) set(false); });
+})();
+
 document.querySelectorAll('.js-enter-app').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     viewApp.classList.add('show');
     viewLanding.style.display='none';
+    /* the sheet measures itself off the panel, which only has a size once the
+       console view is shown -- a timeout rather than rAF so a dropped frame
+       cannot leave it unmeasured */
+    if(typeof mobileSheet!=='undefined'){ mobileSheet.sync(); setTimeout(()=>mobileSheet.sync(), 60); }
     if(!mapInitialized) initMap();
   });
 });
@@ -2019,10 +2283,22 @@ function initMap(){
     });
     map.on('mouseenter','plots-circle', ()=>{ map.getCanvas().style.cursor='pointer'; });
     map.on('mouseleave','plots-circle', ()=>{ map.getCanvas().style.cursor=''; });
-    map.on('click','plots-circle', e=>{ openPlotPopupAndDossier(e.features[0].properties.id, e.lngLat); });
+    /* One click handler, with tolerance. A marker is only 6-15px across, so
+       hit-testing the exact pixel means a near-miss silently shows the
+       out-of-coverage toast instead of opening the listing. Query a small box
+       around the click and take the closest marker in it. */
     map.on('click', e=>{
-      const hits = map.queryRenderedFeatures(e.point, {layers:['plots-circle']});
-      if(hits.length===0) showMapToast();
+      const PAD = 12;
+      const box = [[e.point.x-PAD, e.point.y-PAD],[e.point.x+PAD, e.point.y+PAD]];
+      const hits = map.queryRenderedFeatures(box, {layers:['plots-circle']});
+      if(!hits.length){ showMapToast(); return; }
+      let best = hits[0], bestDist = Infinity;
+      for(const h of hits){
+        const p = map.project(h.geometry.coordinates);
+        const d = Math.hypot(p.x-e.point.x, p.y-e.point.y);
+        if(d < bestDist){ bestDist = d; best = h; }
+      }
+      openPlotPopupAndDossier(best.properties.id, best.geometry.coordinates);
     });
   });
 }
@@ -2144,6 +2420,195 @@ document.getElementById('dossier-chat-send-btn').addEventListener('click', ()=>{
   sendDossierChatMessage(text);
 });
 
+
+/* ======================================================================
+   MOBILE DOSSIER SHEET
+   On a phone the dossier is a bottom sheet rather than a fixed column: it
+   stays out of the way until a listing is picked, and the grab bar lets it
+   be dragged between peek / half / full, or thrown down to dismiss.
+   Desktop keeps the plain side column -- every entry point here no-ops
+   unless the phone media query matches.
+   ====================================================================== */
+
+/* ======================================================================
+   DESKTOP DOSSIER RESIZER
+   The dossier is a fixed 340px column, which is too narrow for a long
+   listing and too wide when you want the map. Drag the seam to set it.
+   Phone is untouched -- there the dossier is a bottom sheet with its own
+   grab bar, and this handle is hidden.
+   ====================================================================== */
+(function(){
+  const panel = document.getElementById('panel-map');
+  const rez = document.getElementById('col-resizer');
+  if(!panel || !rez) return;
+  const mq = matchMedia('(max-width:700px)');
+  const KEY = 'mg-dossier-w';
+  const MIN = 280;
+
+  function apply(w){ panel.style.setProperty('--dossier-w', Math.round(w)+'px'); }
+  function clamp(w){
+    const max = Math.max(MIN, panel.getBoundingClientRect().width * 0.6);
+    return Math.min(Math.max(w, MIN), max);
+  }
+  /* restore the last width the user chose */
+  try{
+    const saved = parseInt(localStorage.getItem(KEY), 10);
+    if(saved) apply(saved);
+  }catch(_){}
+
+  let dragging = false;
+  rez.addEventListener('pointerdown', e => {
+    if(mq.matches) return;
+    dragging = true;
+    rez.classList.add('dragging');
+    panel.classList.add('resizing');
+    try{ rez.setPointerCapture(e.pointerId); }catch(_){}
+    /* stop the drag from selecting the dossier text it passes over */
+    document.body.style.userSelect = 'none';
+    e.preventDefault();
+  });
+  addEventListener('pointermove', e => {
+    if(!dragging) return;
+    const r = panel.getBoundingClientRect();
+    apply(clamp(r.right - e.clientX));
+    /* maplibre sizes its canvas from the container, so it has to be told.
+       Called straight out rather than via rAF: a dropped frame here leaves
+       the canvas a different width from its column until the next event. */
+    if(typeof map !== 'undefined' && map && map.resize) map.resize();
+  });
+  function end(){
+    if(!dragging) return;
+    dragging = false;
+    rez.classList.remove('dragging');
+    panel.classList.remove('resizing');
+    document.body.style.userSelect = '';
+    const w = parseInt(getComputedStyle(panel).getPropertyValue('--dossier-w'), 10);
+    if(w) try{ localStorage.setItem(KEY, w); }catch(_){}
+    if(typeof map !== 'undefined' && map && map.resize) map.resize();
+  }
+  addEventListener('pointerup', end);
+  addEventListener('pointercancel', end);
+
+  /* maplibre reads its container size once and then only when told, so its
+     canvas lags behind any layout change -- a drag, a window resize, the
+     sidebar collapsing. Watching the container covers all of them. */
+  const mapCol = document.getElementById('maplibre-map');
+  if(mapCol && 'ResizeObserver' in window){
+    new ResizeObserver(() => {
+      if(typeof map !== 'undefined' && map && map.resize) map.resize();
+    }).observe(mapCol);
+  }
+
+  /* double-click the seam to go back to the default */
+  rez.addEventListener('dblclick', () => {
+    if(mq.matches) return;
+    panel.style.removeProperty('--dossier-w');
+    try{ localStorage.removeItem(KEY); }catch(_){}
+    if(typeof map !== 'undefined' && map && map.resize) map.resize();
+  });
+})();
+
+const mobileSheet = (function(){
+  const mq = matchMedia('(max-width:700px)');
+  const sheet = document.getElementById('col-dossier');
+  const handle = document.getElementById('sheet-handle');
+  if(!sheet || !handle) return { open(){}, close(){}, sync(){} };
+
+  let snapFull = 0, snapHalf = 0, snapClosed = 0, cur = null, dragging = false;
+
+  /* Returns false while the panel is still display:none -- measuring then
+     yields height 0, and snapping "closed" to translateY(0px) would leave the
+     sheet sitting wide open over the map before anything was even selected. */
+  function measure(){
+    const h = sheet.getBoundingClientRect().height || sheet.offsetHeight;
+    if(!h) return false;
+    snapFull = 0;
+    snapHalf = Math.round(h * 0.52);
+    snapClosed = Math.round(h);
+    return true;
+  }
+  function setY(y, animate){
+    sheet.style.transition = animate ? 'transform .3s cubic-bezier(.22,1,.36,1)' : 'none';
+    sheet.style.transform = 'translateY(' + y + 'px)';
+    cur = y;
+  }
+  function open(){
+    if(!mq.matches) return;
+    if(!measure()) return;
+    if(cur === null || cur >= snapClosed - 1){
+      /* park it closed and flush the layout synchronously, so the transition
+         has a start value to animate from. Not rAF: if that frame is dropped
+         the sheet never opens at all, which reads as a dead tap. */
+      setY(snapClosed, false);
+      void sheet.offsetHeight;
+    }
+    setY(snapHalf, true);
+    sheet.classList.add('open');
+  }
+  function close(){
+    if(!mq.matches) return;
+    if(!measure()) return;
+    setY(snapClosed, true);
+    sheet.classList.remove('open');
+  }
+  /* leaving the phone breakpoint must not strand an inline transform on the
+     desktop column, which would push it off the bottom of the screen */
+  function sync(){
+    if(mq.matches){
+      if(!measure()) return;
+      if(!sheet.classList.contains('open')) setY(snapClosed, false);
+    } else {
+      sheet.style.transition = '';
+      sheet.style.transform = '';
+      cur = null;
+    }
+  }
+
+  let startY = 0, startTr = 0;
+  handle.addEventListener('pointerdown', e => {
+    if(!mq.matches) return;
+    /* a closed sheet has nothing in it -- it is not draggable until a
+       listing has been selected */
+    if(!sheet.classList.contains('open')) return;
+    if(!measure()) return;
+    /* record the origin BEFORE anything that can throw: setPointerCapture
+       rejects a pointer id it does not consider active, and an abort after
+       dragging=true left the deltas NaN, which snapped the sheet wide open
+       no matter which way you dragged */
+    startY = e.clientY;
+    startTr = (cur === null ? snapHalf : cur);
+    dragging = true;
+    try { handle.setPointerCapture(e.pointerId); } catch(_){}
+    sheet.style.transition = 'none';
+  });
+  handle.addEventListener('pointermove', e => {
+    if(!dragging) return;
+    const y = Math.max(snapFull, Math.min(snapClosed, startTr + (e.clientY - startY)));
+    if(Number.isFinite(y)) setY(y, false);
+  });
+  function endDrag(){
+    if(!dragging) return;
+    dragging = false;
+    if(!Number.isFinite(cur)) cur = snapHalf;
+    let best = snapFull;
+    for(const c of [snapFull, snapHalf, snapClosed]){
+      if(Math.abs(c - cur) < Math.abs(best - cur)) best = c;
+    }
+    setY(best, true);
+    if(best === snapClosed){
+      sheet.classList.remove('open');
+      if(typeof closeDossier === 'function') closeDossier();
+    }
+  }
+  handle.addEventListener('pointerup', endDrag);
+  handle.addEventListener('pointercancel', endDrag);
+
+  mq.addEventListener('change', sync);
+  addEventListener('resize', sync);
+  sync();
+  return { open, close, sync };
+})();
+
 function openDossier(id){
   const plot = PLOTS.find(p=>p.id===id);
   if(!plot) return;
@@ -2153,6 +2618,9 @@ function openDossier(id){
 
   document.getElementById('dossier-empty-state').style.display='none';
   document.getElementById('dossier-chat').style.display='flex';
+  mobileSheet.open();                              // phone: rises over the map
+  document.getElementById('panel-map').classList.add('has-dossier');   // desktop: column opens
+  setTimeout(()=>{ if(typeof map!=='undefined' && map && map.resize) map.resize(); }, 300);
 
   /* the price/score/ranking card is built here, from the app's own
      stored data -- never from AI output or typed input -- so unlike the
@@ -2225,6 +2693,13 @@ function closeDossier(){
   dossierChatMessages = [];
   document.getElementById('dossier-chat').style.display='none';
   document.getElementById('dossier-empty-state').style.display='block';
+  /* guard: the drag-to-dismiss path calls closeDossier itself, so only drive
+     the sheet down when the close came from somewhere else */
+  if(typeof mobileSheet !== 'undefined' && !document.getElementById('col-dossier').classList.contains('closing')){
+    mobileSheet.close();
+  }
+  document.getElementById('panel-map').classList.remove('has-dossier');
+  setTimeout(()=>{ if(typeof map!=='undefined' && map && map.resize) map.resize(); }, 300);
   hideModelViewer();
 }
 
@@ -2279,6 +2754,7 @@ document.querySelectorAll('.sidebar-nav-item').forEach(btn=>{
 });
 
 /* sidebar collapse, Claude-app style -- icons only, labels hidden */
+document.getElementById('dossier-close')?.addEventListener('click', ()=>closeDossier());
 document.getElementById('sidebar-toggle').addEventListener('click', ()=>{
   document.getElementById('console-sidebar').classList.toggle('collapsed');
   if(map) setTimeout(()=>map.resize(), 200); // width just changed under it
@@ -2381,9 +2857,41 @@ async function sendChatMessage(text){
   }
 }
 
+/* Clear the whole history. Two-step rather than a confirm() dialog: the first
+   click arms it, a second within 3s wipes it, anything else stands it down. */
+(function(){
+  const btn = document.getElementById('history-clear-btn');
+  if(!btn) return;
+  let armed = 0;
+  function disarm(){
+    armed = 0;
+    btn.textContent = 'Clear';
+    btn.classList.remove('confirm');
+  }
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    if(Date.now() < armed){
+      try{ localStorage.removeItem(CHAT_HISTORY_KEY); }catch(_){}
+      currentChatId = null;
+      disarm();
+      renderChatHistoryList();
+      if(typeof renderChatMessages === 'function') renderChatMessages();
+      return;
+    }
+    armed = Date.now() + 3000;
+    btn.textContent = 'Sure?';
+    btn.classList.add('confirm');
+    setTimeout(() => { if(Date.now() >= armed) disarm(); }, 3100);
+  });
+  document.addEventListener('click', e => { if(e.target !== btn) disarm(); });
+})();
+
 function renderChatHistoryList(){
   const el = document.getElementById('sidebar-history-list');
   const list = loadChatSessions();
+  const clearBtn = document.getElementById('history-clear-btn');
+  /* nothing to clear when the list is empty */
+  if(clearBtn) clearBtn.hidden = !list.length;
   el.innerHTML = '';
   if(!list.length){
     const empty = document.createElement('div');

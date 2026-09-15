@@ -1,0 +1,2028 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tomyris</title>
+<meta name="description" content="A survey sheet of Uzbekistan's state-owned enterprises: 65 entities across mining, gas, energy, banking, transport and law — who owns what, what is being sold, and who is buying. Ask it a question and it traces the connection.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOMYRIS — survey-sheet identity.
+   Ink on warm survey paper. Single-theme by intent: the sheet reads the
+   same whatever the viewer's system is set to.
+   ============================================================ */
+:root{
+  /* One visual world: ink on paper, on any machine. color-scheme keeps the
+     browser from darkening scrollbars and form controls under a dark OS. */
+  color-scheme:light;
+  --ground:#eee7d7;
+  --ground-soft:#e5dcc8;
+  --panel:#f6f1e5;
+  --ink:#191c1e;
+  --ink-2:#50565c;
+  /* 4.7:1 on the paper ground — the old #8d887a was 2.9:1, which is too
+     faint for 9-10px mono labels no matter how wide the tracking */
+  --ink-3:#6b6558;
+  --rule:rgba(25,28,30,.2);
+  --rule-soft:rgba(25,28,30,.1);
+  --graticule:rgba(25,28,30,.042);
+  --accent:#b23a2b;          /* cinnabar — selection + seal only */
+  --indigo:#2b4a7a;          /* iron-gall — cross-cluster links */
+  --knockout:#eee7d7;
+
+  /* A didone is a headline face: its hairlines disappear at reading size, so
+     it is confined to the wordmark. Everything that is actually read — every
+     heading, the epigraph — is set in a text serif built for the job. */
+  --logo:'Bodoni Moda', 'Didot', Georgia, serif;
+  --display:'Source Serif 4', Charter, Georgia, serif;
+  --mono:'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --sans:'Inter', system-ui, -apple-system, sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit;}
+button{font-family:inherit;cursor:pointer;color:inherit;}
+input{font-family:inherit;}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+.wrap{max-width:1160px;margin:0 auto;padding:0 clamp(18px,4vw,40px);}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);
+}
+h1,h2,h3{text-wrap:balance;}
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:13px clamp(18px,4vw,40px);
+  background:var(--ground);
+  border-bottom:1px solid var(--rule);
+}
+/* the sheet is a sub-page of the platform, so it carries a way back up */
+.nav-left{display:flex;align-items:center;gap:13px;min-width:0;}
+.menu-btn{
+  display:flex;flex-direction:column;justify-content:center;gap:4px;
+  width:26px;height:26px;padding:0;margin:0;
+  background:none;border:none;
+}
+.menu-btn span{
+  display:block;height:1.5px;width:18px;background:var(--ink);
+  transition:transform .22s cubic-bezier(.22,1,.36,1),opacity .16s;
+}
+.menu-btn:hover span{background:var(--accent);}
+.menu-btn[aria-expanded="true"] span:nth-child(1){transform:translateY(5.5px) rotate(45deg);}
+.menu-btn[aria-expanded="true"] span:nth-child(2){opacity:0;}
+.menu-btn[aria-expanded="true"] span:nth-child(3){transform:translateY(-5.5px) rotate(-45deg);}
+
+.navmenu{
+  position:absolute;top:100%;left:clamp(18px,4vw,40px);
+  min-width:208px;background:var(--panel);
+  border:1px solid var(--ink);border-top:none;
+  display:flex;flex-direction:column;
+  box-shadow:0 18px 40px -22px rgba(25,28,30,.45);
+}
+.navmenu-item{
+  padding:11px 16px;text-decoration:none;
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-2);border-top:1px solid var(--rule-soft);
+  transition:background .16s,color .16s,padding-left .16s;
+}
+/* an author display rule outranks the UA's [hidden], so state it explicitly */
+.navmenu[hidden]{display:none;}
+.navmenu-item:first-child{border-top:none;}
+.navmenu-item:hover{background:var(--ground);color:var(--accent);padding-left:20px;}
+.navmenu-item.up{
+  color:var(--ink);border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:9px;
+}
+.navmenu-item.up .ar{color:var(--accent);}
+.brand{display:flex;align-items:baseline;gap:10px;text-decoration:none;}
+.brand-sub{font-family:var(--logo);font-size:19px;font-weight:600;letter-spacing:.01em;}
+.nav-links{display:flex;align-items:center;gap:26px;}
+.nav-link{
+  font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;text-decoration:none;color:var(--ink-2);
+  padding-bottom:2px;border-bottom:1px solid transparent;transition:border-color .2s,color .2s;
+}
+.nav-link:hover{color:var(--ink);border-bottom-color:var(--accent);}
+@media(max-width:820px){ .nav-links .nav-link:not(.keep){display:none;} }
+
+/* ============ CHART PLATE ============ */
+.plate{
+  position:relative;
+  /* --navh is measured from the real nav, so adding a nav item cannot leave
+     the sheet a few pixels too tall and put a stub scroll on the hero */
+  height:calc(100svh - var(--navh, 56px));min-height:600px;
+  background:var(--ground-soft);
+  overflow:hidden;
+  /* pan-y keeps the page scrollable on touch; the sheet still drags and pinches */
+  touch-action:pan-y;
+  border-bottom:1px solid var(--rule);
+}
+#chart{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:crosshair;}
+#chart.grabbing{cursor:grabbing;}
+#chart.pointing{cursor:pointer;}
+
+/* the drawn sheet border */
+.neatline{
+  position:absolute;pointer-events:none;z-index:2;
+  inset:clamp(12px,1.7vw,22px);
+  border:1px solid var(--rule);
+}
+.neatline::after{
+  content:"";position:absolute;inset:4px;border:1px solid var(--rule-soft);
+}
+
+/* title block — a real sheet's corner cartouche */
+.cartouche{
+  position:absolute;z-index:4;
+  top:clamp(16px,2.2vw,28px);left:clamp(16px,2.2vw,28px);
+  width:min(400px,calc(100% - 32px));
+  background:var(--panel);
+  border:1px solid var(--rule);
+  padding:22px 24px 20px;
+}
+.cartouche h1{
+  margin:16px 0 0;font-family:var(--logo);
+  font-size:clamp(46px,6.6vw,68px);line-height:.92;font-weight:600;
+  letter-spacing:.005em;
+}
+.cartouche p{
+  margin:16px 0 0;font-size:14.5px;line-height:1.6;color:var(--ink-2);
+  max-width:44ch;
+}
+/* the query bar lives in the title block — it is the point of the sheet */
+.ask{
+  display:flex;align-items:stretch;margin-top:18px;
+  border:1px solid var(--ink);background:var(--ground);
+  transition:box-shadow .18s;
+}
+.ask:focus-within{box-shadow:0 0 0 2px var(--accent);}
+.ask input{
+  flex:1;min-width:0;height:40px;padding:0 12px;
+  background:none;border:none;outline:none;
+  font-family:var(--mono);font-size:12px;letter-spacing:.03em;color:var(--ink);
+}
+.ask input::placeholder{color:var(--ink-3);letter-spacing:.08em;}
+.ask input::-webkit-search-cancel-button{-webkit-appearance:none;}
+.ask-go{
+  flex:none;padding:0 16px;border:none;border-left:1px solid var(--ink);
+  background:var(--ink);color:var(--ground);
+  font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  transition:background .18s,color .18s;
+}
+.ask-go:hover{background:var(--accent);}
+.cartouche .hint{
+  margin-top:11px;padding-top:0;border-top:none;
+  display:flex;flex-direction:column;align-items:flex-start;gap:4px;
+}
+.cartouche .try{
+  background:none;border:none;padding:1px 0;margin:0;text-align:left;
+  font-family:var(--mono);font-size:10px;letter-spacing:.03em;
+  color:var(--ink-3);border-bottom:1px solid transparent;
+  transition:color .16s,border-color .16s;
+}
+.cartouche .try::before{content:"→ ";color:var(--accent);}
+.cartouche .try:hover{color:var(--accent);border-bottom-color:var(--accent);}
+@media(max-width:1000px){
+  .cartouche{width:min(340px,calc(100% - 32px));padding:15px 17px 14px;}
+  .cartouche h1{font-size:clamp(34px,6.6vw,46px);margin-top:12px;}
+  .cartouche p{display:none;}
+  .ask{margin-top:13px;}
+  .ask input{height:36px;}
+  .cartouche .try:nth-child(n+3){display:none;}
+}
+/* below the side-column threshold the title block spans the sheet instead */
+@media(max-width:719px){
+  .cartouche{width:calc(100% - 32px);padding:12px 14px 12px;}
+  .cartouche .try:nth-child(n+2){display:none;}
+}
+
+/* legend — a map legend, symbols not swatches */
+.legend{
+  position:absolute;z-index:4;
+  left:clamp(16px,2.2vw,28px);bottom:clamp(16px,2.2vw,28px);
+  background:var(--panel);border:1px solid var(--rule);
+  padding:13px 15px 12px;
+  display:flex;flex-direction:column;gap:2px;
+}
+.legend-t{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:7px;
+}
+.lg{
+  display:flex;align-items:center;gap:9px;
+  background:none;border:none;padding:3px 2px;margin:0;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--ink-2);text-align:left;
+  transition:color .18s,opacity .18s;
+}
+.lg:hover{color:var(--ink);}
+.lg svg{flex:none;overflow:visible;}
+.lg .ct{font-variant-numeric:tabular-nums;color:var(--ink-3);margin-left:auto;padding-left:12px;}
+.lg.off{opacity:.34;text-decoration:line-through;}
+.legend-key{
+  display:flex;align-items:center;gap:6px;margin-top:9px;padding-top:8px;
+  border-top:1px solid var(--rule-soft);
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+}
+.legend-key svg{flex:none;overflow:visible;}
+.legend-key span{margin-right:5px;}
+@media(max-width:640px){ .legend{padding:10px 11px;} .lg{font-size:9.5px;gap:7px;} }
+
+/* tools */
+.tools{
+  position:absolute;z-index:4;
+  right:clamp(16px,2.2vw,28px);bottom:clamp(16px,2.2vw,28px);
+  display:flex;gap:-1px;align-items:stretch;
+}
+.tool{
+  width:34px;height:34px;margin-left:-1px;
+  background:var(--panel);border:1px solid var(--rule);
+  font-family:var(--mono);font-size:13px;color:var(--ink-2);
+  display:grid;place-items:center;transition:background .16s,color .16s;
+}
+.tool:hover{background:var(--ground);color:var(--ink);}
+.tool.wide{width:auto;padding:0 12px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;}
+.zoomhint{
+  position:absolute;z-index:4;
+  right:clamp(16px,2.2vw,28px);bottom:calc(clamp(16px,2.2vw,28px) + 42px);
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);pointer-events:none;
+}
+.plate.has-finding .zoomhint{opacity:0;}
+@media(max-width:760px){ .zoomhint{display:none;} }
+.findbox{margin-left:-1px;}
+.findbox input{
+  height:34px;width:252px;padding:0 12px;
+  background:var(--panel);border:1px solid var(--rule);
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink);
+  outline:none;
+}
+.findbox input::placeholder{color:var(--ink-3);letter-spacing:.1em;font-size:10px;}
+.findbox input:focus{border-color:var(--accent);}
+.tool.run{border-color:var(--accent);color:var(--accent);}
+.tool.run:hover{background:var(--accent);color:var(--panel);}
+@media(max-width:860px){ .findbox input{width:170px;} .tool.wide:not(.run){display:none;} }
+@media(max-width:600px){ .findbox{display:none;} .tool.run{display:none;} }
+
+/* ---------- finding: the answer a trace produces ---------- */
+.finding{
+  position:absolute;z-index:6;
+  left:50%;transform:translate(-50%,16px);
+  bottom:calc(clamp(16px,2.2vw,28px) + 26px);
+  width:min(760px,calc(100% - clamp(32px,4.4vw,56px)));
+  background:var(--panel);border:1px solid var(--ink);
+  padding:14px 18px 15px;
+  max-height:min(46svh,360px);overflow-y:auto;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s ease,transform .3s cubic-bezier(.22,1,.36,1);
+}
+.finding.open{opacity:1;transform:translate(-50%,0);pointer-events:auto;}
+.finding::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);}
+.fd-top{
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);
+}
+.fd-top b{color:var(--accent);font-weight:500;}
+.fd-close{
+  margin-left:auto;background:none;border:none;padding:0 2px;
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.1em;
+}
+.fd-close:hover{color:var(--accent);}
+.fd-chain{display:flex;align-items:center;gap:2px;flex-wrap:wrap;margin-top:11px;}
+.fd-stop{
+  display:inline-flex;align-items:center;gap:7px;
+  background:none;border:none;padding:4px 7px;margin:0;
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--ink);transition:color .16s,background .16s;
+}
+.fd-stop:hover{color:var(--accent);background:var(--ground);}
+.fd-stop svg{flex:none;overflow:visible;}
+.fd-dash{width:20px;height:1px;background:var(--ink-3);flex:none;}
+.fd-dash.cross{
+  background:none;border-top:1px dashed var(--indigo);height:0;
+}
+.fd-say{
+  margin:10px 0 0;font-size:13px;line-height:1.6;color:var(--ink-2);
+}
+.fd-say em{font-style:normal;color:var(--accent);}
+.fd-log{
+  display:block;font-family:var(--mono);font-size:10.5px;line-height:1.85;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+}
+/* on a narrow sheet the finding takes the whole foot, and the boxes it would
+   sit on top of stand down until it is cleared */
+@media(max-width:760px){
+  .finding{
+    left:0;right:0;bottom:0;width:100%;
+    transform:translateY(16px);
+    border-width:1px 0 0;padding:12px 14px 14px;
+  }
+  .finding.open{transform:none;}
+  .finding{max-height:52svh;}
+  .plate.has-finding .legend,
+  .plate.has-finding .tools{display:none;}
+  .fd-say{font-size:12px;}
+}
+
+/* margin note — the detail panel, styled as a sheet annotation */
+.note-panel{
+  position:absolute;z-index:5;
+  top:clamp(16px,2.2vw,28px);right:clamp(16px,2.2vw,28px);
+  width:min(352px,calc(100vw - 32px));max-height:min(66svh,540px);
+  background:var(--panel);border:1px solid var(--ink);
+  padding:20px 22px 20px;overflow-y:auto;
+  opacity:0;transform:translateX(10px);pointer-events:none;
+  transition:opacity .22s ease,transform .26s cubic-bezier(.22,1,.36,1);
+}
+.note-panel.open{opacity:1;transform:none;pointer-events:auto;}
+.note-panel::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--accent);
+}
+.np-close{
+  position:absolute;top:11px;right:11px;width:24px;height:24px;
+  background:none;border:none;font-family:var(--mono);font-size:13px;color:var(--ink-3);
+  display:grid;place-items:center;transition:color .16s;
+}
+.np-close:hover{color:var(--accent);}
+.np-head{display:flex;align-items:center;gap:9px;margin-top:4px;}
+.np-head svg{flex:none;overflow:visible;}
+.np-cat{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);}
+.np-panel-title{
+  margin:11px 0 0;font-family:var(--display);font-size:24px;line-height:1.14;
+  font-weight:600;padding-right:22px;
+}
+.np-meta{
+  display:flex;gap:14px;margin-top:12px;padding:8px 0;
+  border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft);
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+}
+.np-meta b{color:var(--accent);font-weight:500;}
+.np-cite{margin-left:auto;color:var(--ink-3);}
+.np-body{margin:14px 0 0;font-size:14px;line-height:1.66;color:var(--ink-2);}
+.np-rel-t{
+  margin:18px 0 8px;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.np-rel{display:flex;flex-direction:column;}
+.rel{
+  display:flex;align-items:center;gap:9px;width:100%;
+  background:none;border:none;border-top:1px solid var(--rule-soft);
+  padding:8px 2px;margin:0;text-align:left;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--ink-2);transition:color .16s,padding-left .16s;
+}
+.rel:hover{color:var(--accent);padding-left:6px;}
+.rel svg{flex:none;overflow:visible;}
+@media(max-width:700px){
+  .note-panel{top:auto;left:0;right:0;bottom:0;width:100%;max-height:58svh;border-width:1px 0 0;}
+  .note-panel.open{transform:none;}
+  .note-panel{transform:translateY(14px);}
+}
+
+/* ============ SHEET SECTIONS ============ */
+.sec{padding:clamp(66px,9vw,110px) 0;}
+.sec.soft{background:var(--ground-soft);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+.sec-head{max-width:620px;}
+.sec-head h2{
+  margin:14px 0 0;font-family:var(--display);
+  font-size:clamp(30px,4.2vw,44px);line-height:1.08;font-weight:600;letter-spacing:.002em;
+}
+.sec-head p{margin:15px 0 0;font-size:16px;line-height:1.66;color:var(--ink-2);max-width:60ch;}
+
+/* plates index */
+.plates{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:0;margin-top:clamp(36px,5vw,54px);border-top:1px solid var(--rule);}
+.plate-card{
+  border-bottom:1px solid var(--rule);border-right:1px solid var(--rule);
+  padding:26px 24px 24px;background:none;text-align:left;
+  display:flex;flex-direction:column;gap:0;
+  transition:background .2s;
+}
+.plate-card:last-child{border-right:none;}
+.plate-card:hover{background:var(--panel);}
+.plate-card .sym{margin-bottom:16px;overflow:visible;}
+.plate-card h3{margin:0;font-family:var(--display);font-size:20px;font-weight:600;line-height:1.18;}
+.plate-card .ct{
+  margin:9px 0 0;font-family:var(--mono);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.plate-card p{margin:13px 0 0;font-size:14px;line-height:1.62;color:var(--ink-2);}
+.plate-card .go{
+  margin-top:16px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:7px;
+}
+.plate-card .go i{display:block;width:0;height:1px;background:var(--accent);transition:width .25s;}
+.plate-card:hover .go i{width:20px;}
+@media(max-width:900px){ .plate-card{border-right:none;} }
+
+/* epigraph — the quote carries the section, so it is set in the display face */
+.epigraph{
+  margin:clamp(30px,4vw,46px) 0 0;
+  padding:0 0 0 clamp(20px,3vw,34px);
+  border-left:1px solid var(--ink);
+  max-width:60ch;
+}
+.epigraph p{
+  margin:0;
+  font-family:var(--display);
+  font-size:clamp(17px,1.9vw,20px);
+  line-height:1.66;font-weight:400;
+  color:var(--ink);
+}
+.epigraph cite{
+  display:block;margin-top:20px;font-style:normal;
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.about-body{margin-top:clamp(28px,3.6vw,42px);max-width:62ch;}
+.about-body p{margin:0 0 16px;font-size:16px;line-height:1.68;color:var(--ink-2);}
+.about-body p:last-child{margin-bottom:0;}
+.about-body a{
+  color:var(--accent);text-decoration:none;
+  border-bottom:1px solid var(--accent);
+  transition:opacity .16s;
+}
+.about-body a:hover{opacity:.62;}
+
+/* library shelf */
+.shelf{margin-top:clamp(36px,5vw,54px);display:flex;flex-direction:column;gap:20px;}
+.paper{
+  display:grid;grid-template-columns:168px 1fr;gap:clamp(22px,4vw,44px);
+  align-items:start;padding:24px;background:var(--panel);
+  border:1px solid var(--rule);text-decoration:none;color:inherit;
+  transition:border-color .2s,transform .25s cubic-bezier(.22,1,.36,1);
+}
+.paper:hover{border-color:var(--ink);transform:translateY(-2px);}
+.paper-thumb{
+  position:relative;aspect-ratio:1/1.414;background:var(--ground);
+  border:1px solid var(--rule);padding:16px 14px;overflow:hidden;
+}
+.paper-thumb .tt{
+  font-family:var(--display);font-size:10.5px;line-height:1.25;font-weight:600;
+  display:block;margin-bottom:9px;
+}
+.paper-thumb i{display:block;height:1px;background:var(--ink-3);opacity:.5;margin-bottom:5px;}
+.paper-thumb .pg{
+  position:absolute;left:0;right:0;bottom:0;padding:5px 14px;
+  border-top:1px solid var(--rule);background:var(--panel);
+  font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;color:var(--ink-3);
+  display:flex;justify-content:space-between;
+}
+.paper-meta{
+  font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);display:flex;flex-wrap:wrap;gap:14px;
+}
+.paper h3{margin:12px 0 0;font-family:var(--display);font-size:clamp(21px,2.6vw,28px);
+  line-height:1.18;font-weight:600;}
+.paper .by{margin:9px 0 0;font-size:13.5px;color:var(--ink-2);}
+.paper .abs{margin:14px 0 0;font-size:14px;line-height:1.66;color:var(--ink-2);max-width:62ch;}
+.paper .open{
+  margin-top:18px;display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);
+}
+.paper .open i{display:block;width:16px;height:1px;background:var(--accent);transition:width .25s;}
+.paper:hover .open i{width:28px;}
+@media(max-width:640px){
+  .paper{grid-template-columns:1fr;gap:18px;}
+  .paper-thumb{max-width:150px;}
+}
+
+/* connect */
+.connects{display:grid;grid-template-columns:repeat(auto-fit,minmax(262px,1fr));gap:0;
+  margin-top:clamp(30px,4vw,44px);border-top:1px solid var(--ink);}
+.connect-card{padding:24px 24px 26px;border-bottom:1px solid var(--rule);border-right:1px solid var(--rule);
+  display:flex;flex-direction:column;}
+.connect-card:last-child{border-right:none;}
+.connect-card h3{margin:0;font-family:var(--display);font-size:21px;font-weight:600;}
+.connect-card p{margin:11px 0 0;font-size:14px;line-height:1.64;color:var(--ink-2);flex:1;}
+.connect-card .btn{margin-top:20px;align-self:flex-start;}
+@media(max-width:900px){ .connect-card{border-right:none;} }
+
+/* key figures */
+.figures{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));
+  gap:0;margin-top:clamp(34px,5vw,50px);
+  border-top:1px solid var(--ink);border-left:1px solid var(--rule);
+}
+.fig{
+  padding:18px 18px 16px;
+  border-bottom:1px solid var(--rule);border-right:1px solid var(--rule);
+}
+.fig b{
+  display:block;font-family:var(--display);font-size:29px;font-weight:600;
+  letter-spacing:-.01em;font-variant-numeric:tabular-nums;
+}
+.fig span{
+  display:block;margin-top:6px;font-family:var(--mono);font-size:10.5px;
+  line-height:1.6;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);
+}
+
+/* principles */
+.prins{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:34px 44px;margin-top:clamp(40px,5vw,58px);}
+.prin{padding-top:16px;border-top:1px solid var(--ink);}
+.prin .n{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--ink-3);}
+.prin h3{margin:9px 0 0;font-size:16.5px;font-weight:600;letter-spacing:-.005em;}
+.prin p{margin:9px 0 0;font-size:14px;line-height:1.64;color:var(--ink-2);}
+
+/* notes register */
+.register{margin-top:clamp(36px,5vw,54px);border-top:1px solid var(--ink);}
+.reg-row{
+  display:grid;grid-template-columns:96px 1fr 130px;gap:24px;align-items:baseline;
+  padding:20px 2px;border-bottom:1px solid var(--rule);
+  text-decoration:none;transition:background .18s,padding-left .18s;
+}
+.reg-row:hover{background:var(--panel);padding-left:10px;}
+.reg-date{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.reg-row h3{margin:0;font-size:17px;font-weight:600;line-height:1.32;letter-spacing:-.01em;}
+.reg-row p{margin:7px 0 0;font-size:14px;line-height:1.58;color:var(--ink-2);max-width:62ch;}
+.reg-state{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);text-align:right;
+}
+.reg-state b{display:block;color:var(--accent);font-weight:500;}
+@media(max-width:780px){
+  .reg-row{grid-template-columns:1fr;gap:7px;}
+  .reg-state{text-align:left;}
+}
+.caveat{
+  margin-top:22px;padding:14px 16px;border:1px solid var(--accent);
+  font-family:var(--mono);font-size:11.5px;line-height:1.66;letter-spacing:.02em;color:var(--ink-2);
+}
+.caveat b{color:var(--accent);font-weight:500;letter-spacing:.12em;text-transform:uppercase;font-size:10px;}
+
+/* join */
+.join{display:grid;grid-template-columns:1.35fr 1fr;gap:clamp(30px,5vw,64px);align-items:start;}
+@media(max-width:860px){ .join{grid-template-columns:1fr;} }
+.join h2{margin:14px 0 0;font-family:var(--display);font-size:clamp(28px,3.8vw,40px);line-height:1.1;font-weight:600;}
+.join p{margin:16px 0 0;font-size:15.5px;line-height:1.68;color:var(--ink-2);max-width:56ch;}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;margin-top:26px;
+  padding:13px 22px;text-decoration:none;
+  border:1px solid var(--ink);background:var(--ink);color:var(--ground);
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  transition:background .2s,color .2s;
+}
+.btn:hover{background:transparent;color:var(--ink);}
+.roles{border-top:1px solid var(--ink);}
+.role{
+  display:flex;justify-content:space-between;gap:16px;padding:12px 2px;
+  border-bottom:1px solid var(--rule);
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);
+}
+.role span:last-child{color:var(--ink-3);white-space:nowrap;}
+
+/* footer */
+.foot{padding:48px 0 38px;border-top:1px solid var(--rule);background:var(--ground-soft);}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:28px;}
+@media(max-width:760px){ .foot-grid{grid-template-columns:1fr 1fr;} }
+.foot-word{font-family:var(--display);font-size:20px;font-weight:600;}
+.foot-tag{margin-top:8px;font-size:13.5px;line-height:1.58;color:var(--ink-2);max-width:32ch;}
+.foot h4{margin:0 0 11px;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);font-weight:500;}
+.foot a{display:block;font-size:13.5px;color:var(--ink-2);text-decoration:none;margin-bottom:7px;transition:color .16s;
+  /* an address has no break opportunities: let it wrap rather than widen the column */
+  overflow-wrap:anywhere;}
+.foot a:hover{color:var(--accent);}
+.foot-bot{
+  margin-top:38px;padding-top:18px;border-top:1px solid var(--rule);
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);
+}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.22,1,.36,1);}
+.rv.in{opacity:1;transform:none;}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none;}
+  .note-panel{transition:none;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-left">
+    <button class="menu-btn" id="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="navmenu">
+      <span></span><span></span><span></span>
+    </button>
+    <a class="brand" href="tomyris.html">
+      <span class="brand-sub">Tomyris</span>
+    </a>
+  </div>
+  <div class="navmenu" id="navmenu" hidden>
+    <a class="navmenu-item up" href="marakandai.html"><span class="ar">&larr;</span> Massagetae</a>
+    <a class="navmenu-item" href="#about">About</a>
+    <a class="navmenu-item" href="#library">Library</a>
+    <a class="navmenu-item" href="#connect">Connect</a>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="#about">About</a>
+    <a class="nav-link" href="#library">Library</a>
+    <a class="nav-link keep" href="#connect">Connect</a>
+  </div>
+</nav>
+
+<!-- ================= CHART PLATE ================= -->
+<section class="plate" id="plate">
+  <canvas id="chart"></canvas>
+  <div class="neatline"></div>
+
+  <div class="cartouche">
+    <h1>Tomyris</h1>
+    <p>A map of 65 state-linked enterprises across six sectors: ownership, reform status, and the companies they have partnered with. Drawn from published sources.</p>
+    <form class="ask" id="ask-form" autocomplete="off">
+      <input id="find" type="search" spellcheck="false"
+             placeholder="Ask this sheet…" aria-label="Ask a question about Uzbekistan's state enterprises, or trace a route between two">
+      <button class="ask-go" id="run" type="submit">Trace</button>
+    </form>
+    <div class="hint">
+      <button class="try" data-q="who bought the samarkand grid?">who bought the samarkand grid?</button>
+      <button class="try" data-q="NMMC &rarr; aksa enerji">NMMC &rarr; aksa enerji</button>
+      <button class="try" data-q="which exclusive rights ended?">which exclusive rights ended?</button>
+    </div>
+  </div>
+
+  <div class="legend" id="legend">
+    <div class="legend-t">Sector</div>
+  </div>
+
+  <div class="tools">
+    <button class="tool" id="zin" aria-label="Zoom in" title="Zoom in">+</button>
+    <button class="tool" id="zout" aria-label="Zoom out" title="Zoom out">−</button>
+    <button class="tool wide" id="reset">Refit</button>
+  </div>
+  <div class="zoomhint">Ctrl + scroll to zoom · drag to move the sheet</div>
+
+  <div class="finding" id="finding" aria-live="polite">
+    <div class="fd-top">
+      <span id="fd-kind">Finding</span>
+      <span id="fd-stat"></span>
+      <button class="fd-close" id="fd-close">Clear ✕</button>
+    </div>
+    <div class="fd-chain" id="fd-chain"></div>
+    <p class="fd-say" id="fd-say"></p>
+  </div>
+
+  <aside class="note-panel" id="np" aria-live="polite">
+    <button class="np-close" id="np-close" aria-label="Close note">✕</button>
+    <div class="np-head"><span id="np-sym"></span><span class="np-cat" id="np-cat"></span></div>
+    <h2 class="np-panel-title" id="np-title"></h2>
+    <div class="np-meta">
+      <span>Standing <b id="np-status"></b></span>
+      <span>Links <b id="np-deg"></b></span>
+      <span id="np-cite" class="np-cite"></span>
+    </div>
+    <p class="np-body" id="np-body"></p>
+    <div class="np-rel-t">Linked entities</div>
+    <div class="np-rel" id="np-rel"></div>
+  </aside>
+</section>
+
+<!-- ================= PLATES ================= -->
+<!-- ================= ABOUT ================= -->
+<section class="sec" id="about">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">About</span>
+      <h2>The unknown unknowns</h2>
+    </div>
+    <blockquote class="epigraph rv">
+      <p>Reports that say that something hasn’t happened are always interesting to me, because as we know, there are known knowns; there are things we know we know. We also know there are known unknowns; that is to say we know there are some things we do not know. But there are also unknown unknowns — the ones we don’t know we don’t know. And if one looks throughout the history of our country and other free countries, it is the latter category that tends to be the difficult ones.</p>
+      <cite>Donald Rumsfeld · Department of Defense news briefing · 12 February 2002</cite>
+    </blockquote>
+    <div class="about-body rv">
+      <p>This is what Tomyris currently wants to solve. The lab focuses on gathering and working with a massive amount of data that can be used to address the problems the world is facing today.</p>
+      <p>We are building a model — <a href="https://massagetae.uz">massagetae.uz</a> — that gives solutions to businesses, governments, investors and ordinary consumers while they are making big choices in their ambitious plans.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LIBRARY ================= -->
+<section class="sec soft" id="library">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">Library</span>
+      <h2>Published research</h2>
+    </div>
+    <div class="shelf" id="shelf"></div>
+    <div class="caveat rv">
+      <b>On the links in the sheet</b><br>
+      Most lines are ownership, subsidiary or reform relationships stated directly in the paper. Seven are sector relationships added so that the rail and power groups connect to the rest of the sheet — operator to railcar builder, gas producer to thermal generation, reform instrument to reform programme. They are drawn the same way but are inference, not citation.
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONNECT ================= -->
+<section class="sec" id="connect">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">Connect</span>
+      <h2>Work with Tomyris</h2>
+    </div>
+    <div class="connects">
+      <div class="connect-card rv">
+        <h3>Connect with Tomyris</h3>
+        <p>Questions about the dataset, the sources behind an entity, or the methodology. We answer everything that comes with a document attached.</p>
+        <a class="btn" href="mailto:massagetaeuz@gmail.com?subject=Tomyris%20%E2%80%94%20enquiry">Get in touch</a>
+      </div>
+      <div class="connect-card rv">
+        <h3>Contribute</h3>
+        <p>A sheet like this is out of date the day after it is drawn. If an entity here has changed hands, or one is missing, send the document. Contributions are credited on the sheet.</p>
+        <a class="btn" href="mailto:massagetaeuz@gmail.com?subject=Tomyris%20%E2%80%94%20correction">Send a correction</a>
+      </div>
+      <div class="connect-card rv">
+        <h3>Join the research team</h3>
+        <p>We are looking for researchers and data people who like primary sources. Tell us what you would work on and send something you have written.</p>
+        <a class="btn" href="mailto:massagetaeuz@gmail.com?subject=Tomyris%20%E2%80%94%20joining">Apply</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-word">Tomyris</div>
+        <div class="foot-tag">An independent research group. We gather the data, do the research, and publish it here.</div>
+      </div>
+      <div>
+        <h4>Sheet</h4>
+        <a href="#about">About</a><a href="#library">Library</a><a href="#connect">Connect</a><a href="marakandai.html">Massagetae &rarr;</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:massagetaeuz@gmail.com">massagetaeuz@gmail.com</a><a href="#connect">Contribute</a><a href="#connect">Join the team</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© <span id="year"></span> Tomyris</span>
+      <span>Revised September 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   TOMYRIS SURVEY CHART
+   A force-directed graph drawn in the idiom of a survey sheet:
+   ink hairlines, symbol-coded stations, a graticule underneath,
+   and labels placed the way a cartographer places them.
+   Categories are encoded by SYMBOL, not colour.
+   ============================================================ */
+
+const CATS = {
+  mine:  { label:'Mining & Metals',    sym:'station', tint:'#a8842c' },
+  hydro: { label:'Gas & Chemicals',    sym:'square',  tint:'#2b4a7a' },
+  power: { label:'Energy & Utilities', sym:'trig',    tint:'#2e6b56' },
+  money: { label:'Banking & Markets',  sym:'hex',     tint:'#5b4a7d' },
+  move:  { label:'Industry & Transport', sym:'diamond', tint:'#9b4230' },
+  law:   { label:'State, Law & Oversight', sym:'pent', tint:'#4a5560' }
+};
+const CAT_KEYS = Object.keys(CATS);
+
+/* id, plate, name, weight, standing, note, citations, isPrivate
+   Every line below is drawn from Amirov, "Uzbekistan's SOE Landscape Across
+   Key Sectors and Their Role in the Economy" — bracketed numbers are that
+   paper's reference list. Solid glyphs are private counterparties. */
+const NODES = [
+  /* ---- MINING & METALS ---- */
+  ['nmmc','mine','NMMC',1,'State-owned','Navoi Mining and Metallurgy Combine. Mines gold, silver and uranium. Held 98% by the Ministry of Economy and Finance and 2% by UzSAMA.','29, 31'],
+  ['ammc','mine','AMMC',.8,'IPO 2026–28','Almalyk Mining and Metallurgical Combine. Scheduled for a public share offering between 2026 and 2028 as part of the state asset privatisation programme. Raised output to 51.6 trillion soums in 2025.','14'],
+  ['uzmet','mine','Uzmetkombinat',.7,'Exclusive right ended','Until 1 January 2025 the only enterprise authorised to purchase ferrous metal scrap and waste in Uzbekistan. That exclusive right was ended by Presidential Decree UP-85.','13, 15'],
+
+  /* ---- GAS & CHEMICALS ---- */
+  ['ung','hydro','Uzbekneftegaz',1,'State-owned','The second largest gas-producing company in Central Asia. Controlled almost half of the total gas reserve fields in Uzbekistan as of 2023.','17, 18'],
+  ['utg','hydro','Uztransgaz',.75,'Exclusive right ended','From 1 July 2026 no longer the sole exporter, nor the operator for the centralised import of natural gas from external sources.',''],
+  ['navoiyazot','hydro','Navoiyazot',.7,'Privatisation prep','Produces more than 30% of all chemical output in Uzbekistan and covers the needs of almost every industry, transport, agriculture and the fuel and energy complex.','19'],
+  ['uzkimyo','hydro','Uzkimyosanoat',.65,'State holding','State-owned holding company controlling the country’s chemical and fertiliser sector.',''],
+
+  /* ---- ENERGY & UTILITIES ---- */
+  ['negu','power','NEGU',1,'Natural monopoly','National Electric Grid of Uzbekistan. The single offtaker: it buys power from every generator, private ones included, so a private producer sells to one counterparty.',''],
+  ['ren','power','Regional Electric Networks',.8,'Privatising','Buys electricity from NEGU and sells it on to consumers region by region. Going through major privatisation reform.','22'],
+  ['samgrid','power','Samarkand Networks',.62,'Transferred, PPP','The Samarkand region distribution network, officially transferred to Turkey’s Aksa Enerji in November 2025 under a public-private partnership.','22'],
+  ['tpp','power','Thermal Power Plants JSC',.85,'51% stake for sale','The major producer of electricity across Uzbekistan. An advisory tender for privatisation was announced in 2022, with a plan to sell a 51% stake in 2025.','24'],
+  ['talimarjan','power','Talimarjan TPP',.5,'Partly privatised','Partial privatisation completed.','24'],
+  ['takhiatash','power','Takhiatash TPP',.5,'Unconfirmed','Announced for international auction in 2025; completion remains unconfirmed.','24'],
+  ['angren','power','Angren TPP',.45,'Returns below target','Reported not to have met the expected returns.',''],
+  ['tashtpp','power','Tashkent TPP',.45,'Unconfirmed','Reported in the same group as Takhiatash and Angren; completion unconfirmed.','24'],
+  ['hudud','power','Hududgaztaminot',.6,'Exclusive right ended','Supplying liquefied petroleum gas to households and businesses is now open to private companies.',''],
+  ['aksa','power','Aksa Enerji',.5,'Private','Turkish energy company. Took over management and operation of the Samarkand distribution network under a PPP in November 2025.','22',true],
+
+  /* ---- BANKING & MARKETS ---- */
+  ['uzex','money','UzEX',.9,'State-owned','The largest commodity exchange platform in Central Asia. Major producers and state enterprises may sell standardised goods only here, through open competitive public auctions rather than private direct deals.',''],
+  ['ufrd','money','UFRD',.75,'100% state','Uzbekistan Fund for Reconstruction and Development. Acts as an investment vehicle prioritising oil and gas, metals, chemicals and mining.','32'],
+  ['uzdif','money','UzDIF',.55,'Co-investor','Covers up to 49% of a project’s cost, with the purpose of attracting and supporting investors.',''],
+  ['rse','money','Toshkent Stock Exchange',.72,'Sole venue','The Republican Stock Exchange “Toshkent” JSC — the only stock and bond trading platform operating in Uzbekistan.',''],
+  ['uznif','money','UzNIF',.5,'State fund','National investment fund. Manages Uzbekistan Airways in partnership with Franklin Templeton.',''],
+  ['ftempleton','money','Franklin Templeton',.45,'Private','Asset manager partnered with UzNIF in the management of Uzbekistan Airways ahead of its listing.','',true],
+  ['agrobank','money','Agrobank',.42,'State-owned','One of the nine state-owned commercial banks. Nine of the country’s 35 commercial banks are state-held — 26% by count, but roughly 63% of all banking assets.','27, 30'],
+  ['asakabank','money','Asakabank',.42,'State-owned','One of the nine state-owned commercial banks slated for partial privatisation under the 2030 strategy.','27, 30'],
+  ['uzpsb','money','Uzsanoatkurilishbank',.42,'State-owned','One of the nine state-owned commercial banks slated for partial privatisation under the 2030 strategy.','27, 30'],
+  ['xalq','money','Xalq Bank',.42,'State-owned','One of the nine state-owned commercial banks slated for partial privatisation under the 2030 strategy.','27, 30'],
+  ['turonbank','money','Turonbank',.42,'State-owned','One of the nine state-owned commercial banks slated for partial privatisation under the 2030 strategy.','27, 30'],
+  ['bdb','money','Business Development Bank',.42,'State-owned','One of the nine state-owned commercial banks slated for partial privatisation under the 2030 strategy.','27, 30'],
+  ['aloqabank','money','Aloqabank',.42,'State-owned','One of the nine state-owned commercial banks slated for partial privatisation under the 2030 strategy.','27, 30'],
+  ['uzmilliy','money','Uzmilliy Bank',.42,'State-owned','One of the nine state-owned commercial banks slated for partial privatisation under the 2030 strategy.','27, 30'],
+  ['microcredit','money','Microcreditbank',.42,'State-owned','One of the nine state-owned commercial banks slated for partial privatisation under the 2030 strategy.','27, 30'],
+
+  /* ---- INDUSTRY & TRANSPORT ---- */
+  ['uty','move','Uzbekistan Railways',1,'State-owned','Owns almost the entire rail network, moves about 90% of cargo in Uzbekistan and runs nearly all passenger services across regions and abroad.',''],
+  ['infra','move','Uztemiryolinfratuzilma',.6,'Unbundled','Infrastructure operator established under Resolution PQ-329 of 10 October 2023. Manages track, power, signalling, dispatch and freight stations.','34, 35, 36'],
+  ['ekspress','move','Temiryulekspress',.55,'Unbundled','The high-speed passenger operator, separated from O‘zbekiston Temir Yo‘llari as a distinct commercial unit under decree PP-329.',''],
+  ['yolovchi','move','O‘ztemiryo‘lyo‘lovchi',.55,'Unbundled','Carries more than 15 million passengers on conventional long-distance trains.',''],
+  ['shahar','move','Shahar atrofida',.4,'Unbundled','Created under PP-329 and separated from O‘ztemiryo‘lyo‘lovchi to focus on transits with surrounding districts, towns and villages.',''],
+  ['vokzallari','move','Temir yul vokzallari',.4,'Unbundled','Responsible for the commercial development of passenger railway stations across Uzbekistan.',''],
+  ['konteyner','move','Termiryulkargo',.55,'35% sold','Formerly Uztemiryulkonteyner; operated the railway container fleet and planned domestic and international container transport. Cotton Logistics acquired a 35% state stake for 200 billion UZS in November 2024.',''],
+  ['cotton','move','Cotton Logistics',.4,'Private','Acquired a 35% state stake in Uztemiryulkonteyner for 200 billion UZS in November 2024.','',true],
+  ['carriage','move','Tashkent Carriage Plant',.62,'Trust management','The only manufacturer in Central Asia that builds and repairs passenger railcars. A 90% stake sits under trust management with Transport Engineering Centre LLC, linked to Ransmashholding.','33'],
+  ['tmh','move','TMH / Ransmashholding',.45,'Private','Rolling stock group linked to Transport Engineering Centre LLC, which holds 90% of the Tashkent Carriage Plant in trust.','33',true],
+  ['uzvagontamir','move','Uzvagontamir',.45,'UTY subsidiary','Operates heavy freight car repair depots and maintenance yards. UTY is both the buyer and the seller of these repair services.',''],
+  ['granit','move','Granit JSC',.4,'UTY subsidiary','Produces construction materials, crushed stone and concrete — and also bread and bakery products. Owned by Uzbekistan Railways.',''],
+  ['ijtimoiy','move','Temir yul ijtimoiy hizmatlar',.4,'UTY subsidiary','Manages the railway’s social, health and welfare estate: the Central Clinical Hospital of Railway Workers, the Railway Children’s Hospital and the Nazarbek, Sihatgoh and Qo‘ng‘irot sanatoria among others.',''],
+  ['lokomotiv','move','PFC Lokomotiv',.35,'UTY subsidiary','Football club owned by Uzbekistan Railways; a non-core asset of the holding.',''],
+  ['foundry','move','Foundry & Mechanical Plant',.4,'State-owned','Tashkent factory producing universal gondola and freight cars along with their spare components.',''],
+  ['airways','move','Uzbekistan Airways',.85,'IPO 2027','Flag carrier holding nearly 48% of the domestic aviation market. Privatisation was accelerated and a listing is planned for 2027.',''],
+  ['uzavto','move','Uzavtosanoat',.85,'IPO 2026','Plans to offer up to 30% of its shares in a 2026 listing. Coordinates more than 60 subsidiary companies.',''],
+  ['uzauto','move','UzAuto Motors',.65,'Subsidiary','The main automobile manufacturer, producing Chevrolet vehicles.',''],
+  ['powertrain','move','UzAuto Powertrain',.45,'Subsidiary','Engine production for UzAuto Motors.',''],
+  ['alyans','move','Alyans Auto, Jizzakh',.45,'Subsidiary','Light commercial vehicles, linked to Volkswagen.',''],
+  ['byd','move','BYD Uzbekistan',.5,'Joint venture','New energy vehicle joint venture with BYD.','',true],
+  ['samauto','move','Sam Auto',.62,'Privatised','Privatised with an $80 million investment from Anadolu Isuzu for modernisation and expansion.',''],
+  ['anadolu','move','Anadolu Isuzu',.45,'Private','Turkish manufacturer that put $80 million into Sam Auto on privatisation.','',true],
+  ['uztelecom','move','Uztelecom',.75,'IPO 2027','The largest mobile operator in the country. Its listing was postponed to 2027 to put corporate transformation, restructuring and governance first. An earlier offering of 2% of shares raised about 47.36 billion UZS.','37'],
+
+  /* ---- STATE, LAW & OVERSIGHT ---- */
+  ['yellow','law','Yellow Pages Rule',.92,'In force','Presidential Decree UP-6019, signed 6 July 2020 and effective 1 October 2020. Provides that new state enterprises are not created — outside defence and national security — in markets where five or more private businesses already operate.','6'],
+  ['zru850','law','Competition Law ZRU-850',.8,'In force','The 2023 Competition Law, articles 23, 24 and 25. Requires any enterprise with state participation, newly created or reorganised, to obtain Competition Committee approval first.','7, 8, 9'],
+  ['zru821','law','State Property Law ZRU-821',.8,'In force','Law on State-Owned Property Management, 9 March 2023. Lists what may only ever be managed by the state: land and subsoil, airspace, nuclear materials and fissile products, weapons manufacture, currency and stamp production, public roads, burial sites and more.','28'],
+  ['pp329','law','Decree PP-329',.72,'In force','Resolution of 10 October 2023 on the radical reform of the railway transport sector — the instrument that unbundled Uzbekistan Railways into separate operating companies.','34, 35, 36'],
+  ['up85','law','Decree UP-85',.55,'In force','Ended the exclusive right to purchase ferrous metal scrap and waste, effective 1 January 2025.','13, 15'],
+  ['strategy2030','law','Uzbekistan 2030 Strategy',.88,'Target','Targets annual lending in the banking and financial system of $40 billion, bank deposits up fourfold, four banks remaining in state hands, and the state banks’ share of assets moving from 63% to 55%.',''],
+  ['komitet','law','Competition Committee',.6,'Regulator','Must approve the creation or reorganisation of any enterprise with state participation, under ZRU-850.','7, 8, 9'],
+  ['moef','law','Ministry of Economy & Finance',.62,'State owner','Holds 98% of NMMC — the owner of record for the single largest mining asset in the country.','29, 31'],
+  ['uzsama','law','UzSAMA',.45,'State owner','State assets management agency; holds the remaining 2% of NMMC.','29, 31']
+];
+
+/* Ownership, control and reform relationships as stated in the paper. */
+const LINKS = [
+  /* ownership and corporate structure */
+  ['moef','nmmc'],['uzsama','nmmc'],['moef','uzsama'],
+  ['uzkimyo','navoiyazot'],['ung','utg'],['utg','hudud'],
+  ['negu','ren'],['negu','tpp'],['ren','samgrid'],['samgrid','aksa'],
+  ['tpp','talimarjan'],['tpp','takhiatash'],['tpp','angren'],['tpp','tashtpp'],
+  ['uty','infra'],['uty','ekspress'],['uty','yolovchi'],['uty','vokzallari'],['uty','shahar'],
+  ['uty','granit'],['uty','uzvagontamir'],['uty','ijtimoiy'],['uty','lokomotiv'],['uty','konteyner'],
+  ['yolovchi','shahar'],['ekspress','yolovchi'],['infra','vokzallari'],
+  ['konteyner','cotton'],['carriage','tmh'],['carriage','foundry'],
+  ['uzavto','uzauto'],['uzavto','powertrain'],['uzavto','alyans'],['uzavto','byd'],
+  ['uzauto','powertrain'],['samauto','anadolu'],
+  ['airways','uznif'],['uznif','ftempleton'],['airways','ftempleton'],
+
+  /* the reform instruments, and what they act on */
+  ['pp329','uty'],['pp329','infra'],['pp329','ekspress'],['pp329','shahar'],['pp329','yolovchi'],
+  ['up85','uzmet'],
+  ['yellow','komitet'],['yellow','zru850'],['zru850','komitet'],
+  ['zru821','nmmc'],['zru821','moef'],['zru821','uzsama'],['zru821','yellow'],
+  ['strategy2030','agrobank'],['strategy2030','asakabank'],['strategy2030','uzpsb'],
+  ['strategy2030','xalq'],['strategy2030','turonbank'],['strategy2030','bdb'],
+  ['strategy2030','aloqabank'],['strategy2030','uzmilliy'],['strategy2030','microcredit'],
+  ['strategy2030','ammc'],['strategy2030','airways'],['strategy2030','uztelecom'],['strategy2030','uzavto'],
+  ['strategy2030','yellow'],
+
+  /* markets: where state output must be sold, and who funds what */
+  ['uzex','nmmc'],['uzex','ammc'],['uzex','uzmet'],['uzex','navoiyazot'],['uzex','uzkimyo'],
+  ['uzex','rse'],
+  ['ufrd','ung'],['ufrd','nmmc'],['ufrd','ammc'],['ufrd','navoiyazot'],
+  ['uzdif','ufrd'],['uzdif','samauto'],['uzdif','carriage'],
+  ['rse','ammc'],['rse','airways'],['rse','uztelecom'],['rse','uzavto'],['rse','uznif'],
+  ['uztelecom','airways'],
+
+  /* privatisation outcomes, compared */
+  ['samauto','uzavto'],['talimarjan','samgrid'],['angren','takhiatash'],['angren','tashtpp'],
+
+  /* sector relationships that tie the rail and power groups to the rest — without
+     these the two largest state systems sit unreachable from everything else */
+  ['uty','carriage'],          /* runs nearly all passenger services; sole railcar builder */
+  ['uzex','granit'],           /* a state producer of standardised goods sells through UzEX */
+  ['zru850','pp329'],          /* reorganising state enterprises falls under the Competition Law */
+  ['strategy2030','pp329'],    /* both instruments of the same reform programme */
+  ['strategy2030','tpp'],      /* the 51% thermal stake sits inside that programme */
+  ['uzdif','ren'],             /* private investment for regional grid modernisation */
+  ['ung','tpp']                /* the gas producer behind thermal generation */
+];
+
+/* A published sheet looks the same every time it is opened, so the layout is
+   seeded rather than random — same drawing on every load, in every browser. */
+let _s = 0x5eed1a;
+function rnd(){ _s |= 0; _s = _s + 0x6D2B79F5 | 0;
+  let t = Math.imul(_s ^ _s>>>15, 1 | _s);
+  t = t + Math.imul(t ^ t>>>7, 61 | t) ^ t;
+  return ((t ^ t>>>14) >>> 0) / 4294967296; }
+function reseed(){ _s = 0x5eed1a; }
+
+/* ---------- model ---------- */
+const byId = new Map();
+const nodes = NODES.map(([id,cat,label,weight,status,note,cite,priv], i) => {
+  const a = (CAT_KEYS.indexOf(cat) / CAT_KEYS.length) * Math.PI*2 - Math.PI/2;
+  const R = 340;
+  const n = { id, cat, label, weight, status, note, cite:cite||'', priv:!!priv,
+    r: 4.2 + weight*4.6,
+    ax: Math.cos(a)*R, ay: Math.sin(a)*R,
+    x: Math.cos(a)*R + (rnd()-.5)*200,
+    y: Math.sin(a)*R + (rnd()-.5)*200,
+    vx:0, vy:0, nb:new Set(), lab:null, seq:i };
+  byId.set(id, n); return n;
+});
+const links = LINKS.map(([a,b]) => ({ a:byId.get(a), b:byId.get(b) })).filter(l => l.a && l.b);
+links.forEach(l => { l.a.nb.add(l.b); l.b.nb.add(l.a); });
+links.forEach((l,i) => { l.seq = i; l.cross = l.a.cat !== l.b.cat; });
+
+/* ---------- theme tokens read from CSS ---------- */
+let T = {};
+function readTokens(){
+  const cs = getComputedStyle(document.documentElement);
+  const g = n => cs.getPropertyValue(n).trim();
+  T = {
+    ground:g('--ground-soft'), panel:g('--panel'), ink:g('--ink'),
+    ink2:g('--ink-2'), ink3:g('--ink-3'), rule:g('--rule'),
+    graticule:g('--graticule'), accent:g('--accent'), indigo:g('--indigo'),
+    knockout:g('--ground-soft')
+  };
+}
+readTokens();   /* one palette, so this runs once */
+
+/* ---------- canvas ---------- */
+const cv = document.getElementById('chart');
+const ctx = cv.getContext('2d');
+const plate = document.getElementById('plate');
+let W=0, H=0, DPR=1, sized=false;
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const navEl = document.querySelector('.nav');
+function syncNavHeight(){
+  const h = Math.round(navEl.getBoundingClientRect().height);
+  if (h) document.documentElement.style.setProperty('--navh', h + 'px');
+}
+function resize(){
+  syncNavHeight();
+  const r = plate.getBoundingClientRect();
+  if (r.width < 2 || r.height < 2) return;
+  if (Math.abs(r.width-W) < 1 && Math.abs(r.height-H) < 1) return;
+  W = r.width; H = r.height;
+  DPR = Math.min(devicePixelRatio || 1, 2);
+  cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  if (!sized){ sized = true; settle(700); }
+  fitGraph();
+  markDirty(400);
+}
+addEventListener('resize', resize);
+if ('ResizeObserver' in window){
+  const ro = new ResizeObserver(resize);
+  ro.observe(plate);
+  ro.observe(navEl);   /* the nav wrapping on a narrow screen changes the fit */
+}
+
+/* ---------- camera ---------- */
+const cam = { x:0, y:0, z:1 };
+const SX = wx => (wx - cam.x)*cam.z + W/2;
+const SY = wy => (wy - cam.y)*cam.z + H/2;
+const WX = sx => (sx - W/2)/cam.z + cam.x;
+const WY = sy => (sy - H/2)/cam.z + cam.y;
+
+/* The usable area of the sheet: inside the neatline, minus whatever the corner
+   boxes actually occupy. Measured from the DOM rather than guessed, so the
+   drawing never ends up underneath the cartouche at some in-between width. */
+const cartEl  = document.querySelector('.cartouche');
+const legEl   = document.getElementById('legend');
+const toolsEl = document.querySelector('.tools');
+const findEl  = document.getElementById('finding');
+function availRect(){
+  const inset = W > 900 ? 40 : 22;
+  const pr = plate.getBoundingClientRect();
+  const B = el => {
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    if (!r.width || !r.height) return null;
+    return { x:r.x-pr.x, y:r.y-pr.y, w:r.width, h:r.height };
+  };
+  const cart = B(cartEl), leg = B(legEl), tls = B(toolsEl);
+  const hint = B(document.querySelector('.zoomhint'));
+  const fnd = (findEl && findEl.classList.contains('open')) ? B(findEl) : null;
+  let bottom = Math.max(38, tls ? H - tls.y + 14 : 0, hint ? H - hint.y + 10 : 0,
+                        fnd ? H - fnd.y + 14 : 0);
+
+  /* A side column beats a top band well below desktop width: the drawing is
+     roughly square, so 583x571 reads far better than 905x196. */
+  if (W >= 720){                         /* cartouche and legend stack down the left */
+    let left = inset;
+    if (cart) left = Math.max(left, cart.x + cart.w + 22);
+    if (leg)  left = Math.max(left, leg.x + leg.w + 22);
+    return { x:left, y:inset, w:Math.max(200, W-inset-left), h:Math.max(160, H-inset-bottom) };
+  }
+  /* narrow: cartouche takes the top band, legend and tools the bottom one */
+  const top = cart ? cart.y + cart.h + 14 : inset;
+  if (leg) bottom = Math.max(bottom, H - leg.y + 14);
+  return { x:inset, y:top, w:W-inset*2, h:Math.max(130, H-bottom-top) };
+}
+/* Fit in two passes: once on the stations, then again once the names are laid
+   out, because a name is far wider than the station it belongs to. */
+function fitGraph(){
+  const vis = nodes.filter(isOn);
+  if (!vis.length || !W) return;
+  const A = availRect();
+  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
+  for (const n of vis){ x0=Math.min(x0,n.x); x1=Math.max(x1,n.x); y0=Math.min(y0,n.y); y1=Math.max(y1,n.y); }
+  const pad = 26;
+  cam.z = Math.max(.3, Math.min(1.5, Math.min(A.w/((x1-x0)+pad*2), A.h/((y1-y0)+pad*2))));
+  cam.x = (x0+x1)/2 - (A.x + A.w/2 - W/2)/cam.z;
+  cam.y = (y0+y1)/2 - (A.y + A.h/2 - H/2)/cam.z;
+  zBase = cam.z;
+  fitLabels();
+}
+/* Frame a specific set of stations — used so a trace result is always on screen. */
+function frameNodes(list, maxZoom){
+  if (!list || !list.length || !W) return;
+  const A = availRect();
+  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
+  for (const n of list){ x0=Math.min(x0,n.x); x1=Math.max(x1,n.x); y0=Math.min(y0,n.y); y1=Math.max(y1,n.y); }
+  const pad = 110;
+  const z = Math.min(A.w/((x1-x0)+pad*2), A.h/((y1-y0)+pad*2));
+  cam.z = Math.max(.3, Math.min(maxZoom || 1.15, z));
+  cam.x = (x0+x1)/2 - (A.x + A.w/2 - W/2)/cam.z;
+  cam.y = (y0+y1)/2 - (A.y + A.h/2 - H/2)/cam.z;
+  markDirty(400);
+}
+
+/* Second pass — nudge the fit so the names sit inside the sheet. A name is far
+   wider than the station it belongs to, so on a crowded sheet this must not be
+   allowed to shrink the drawing away: past a point a chart drops the names it
+   cannot place rather than making every one of them unreadable. */
+let zBase = 1;
+function fitLabels(){
+  const A = availRect();
+  const floor = Math.max(.3, zBase * .74);
+  for (let pass=0; pass<3; pass++){
+    layoutLabels();
+    let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
+    let any=false;
+    for (const n of nodes){
+      if (!isOn(n)) continue;
+      const sx=SX(n.x), sy=SY(n.y), r=n.r*cam.z+6;
+      x0=Math.min(x0,sx-r); x1=Math.max(x1,sx+r); y0=Math.min(y0,sy-r); y1=Math.max(y1,sy+r); any=true;
+      const L=n.lab; if (!L) continue;
+      x0=Math.min(x0,L.rect.x); x1=Math.max(x1,L.rect.x+L.rect.w);
+      y0=Math.min(y0,L.rect.y); y1=Math.max(y1,L.rect.y+L.rect.h);
+    }
+    if (!any) return;
+    const k = Math.min(A.w/(x1-x0), A.h/(y1-y0));
+    /* recentre on what is actually drawn, names included */
+    const cx=(x0+x1)/2, cy=(y0+y1)/2;
+    cam.x += (cx - (A.x+A.w/2))/cam.z;
+    cam.y += (cy - (A.y+A.h/2))/cam.z;
+    if (k > .995 && k < 1.06) return;
+    const next = Math.max(floor, Math.min(1.5, cam.z * Math.min(k, 1.06)));
+    if (next === cam.z) return;
+    cam.z = next;
+  }
+}
+
+/* ---------- physics: settle, then hold still ---------- */
+let alpha = 1;
+function tick(){
+  const n = nodes.length;
+  for (let i=0;i<n;i++){
+    const a = nodes[i];
+    for (let j=i+1;j<n;j++){
+      const b = nodes[j];
+      let dx=b.x-a.x, dy=b.y-a.y, d2=dx*dx+dy*dy;
+      if (d2 < 1){ d2=1; dx=rnd()-.5; dy=rnd()-.5; }
+      if (d2 > 300000) continue;
+      const d=Math.sqrt(d2), f=(3000 + a.r*b.r*30)/d2, ux=dx/d, uy=dy/d;
+      a.vx-=ux*f; a.vy-=uy*f; b.vx+=ux*f; b.vy+=uy*f;
+    }
+  }
+  for (const l of links){
+    const a=l.a, b=l.b, dx=b.x-a.x, dy=b.y-a.y;
+    const d=Math.hypot(dx,dy)||1;
+    const rest = 92 + a.r + b.r + (l.cross ? 120 : 0);
+    const f=(d-rest)*(l.cross ? .0038 : .017), ux=dx/d, uy=dy/d;
+    a.vx+=ux*f; a.vy+=uy*f; b.vx-=ux*f; b.vy-=uy*f;
+  }
+  for (const nd of nodes){
+    /* hold each plate together against its cross-plate links, so the six
+       groups stay legible as groups */
+    nd.vx += (nd.ax-nd.x)*.0082 + (0-nd.x)*.0007;
+    nd.vy += (nd.ay-nd.y)*.0082 + (0-nd.y)*.0007;
+    if (nd === drag) { nd.vx = nd.vy = 0; continue; }
+    nd.vx*=.85; nd.vy*=.85;
+    const sp=Math.hypot(nd.vx,nd.vy);
+    if (sp>10){ nd.vx=nd.vx/sp*10; nd.vy=nd.vy/sp*10; }
+    nd.x += nd.vx*alpha; nd.y += nd.vy*alpha;
+  }
+  alpha *= .992;
+  if (alpha < .008) alpha = 0;     /* a survey sheet holds still */
+}
+function settle(steps){ alpha = 1; for (let i=0;i<steps;i++) tick(); alpha = 0; }
+function energise(){ alpha = Math.max(alpha, .55); markDirty(2600); }
+
+/* ---------- state ---------- */
+let hover=null, sel=null, drag=null, panning=false, panFrom=null, moved=false, query='';
+const on = {}; CAT_KEYS.forEach(k => on[k]=true);
+const isOn = n => on[n.cat];
+const hit = n => !query ? true : (n.label.toLowerCase().includes(query) || n.note.toLowerCase().includes(query) || CATS[n.cat].label.toLowerCase().includes(query));
+function lit(n){
+  if (!isOn(n)) return false;
+  if (trace && trace.mode !== 'none') return trace.involved.has(n);
+  if (query) return hit(n);
+  if (sel) return n===sel || sel.nb.has(n);
+  if (hover) return n===hover || hover.nb.has(n);
+  return true;
+}
+
+/* ---------- symbols (shared by canvas and DOM) ---------- */
+const SYM_PATH = {
+  station: r => `M ${-r} 0 A ${r} ${r} 0 1 0 ${r} 0 A ${r} ${r} 0 1 0 ${-r} 0 Z`,
+  square:  r => `M ${-r} ${-r} H ${r} V ${r} H ${-r} Z`,
+  trig:    r => `M 0 ${-r*1.18} L ${r*1.05} ${r*.75} L ${-r*1.05} ${r*.75} Z`,
+  hex:     r => { let p=''; for(let i=0;i<6;i++){ const a=Math.PI/6 + i*Math.PI/3; p += (i?'L':'M')+` ${(Math.cos(a)*r).toFixed(2)} ${(Math.sin(a)*r).toFixed(2)} `;} return p+'Z'; },
+  diamond: r => `M 0 ${-r*1.2} L ${r*1.08} 0 L 0 ${r*1.2} L ${-r*1.08} 0 Z`,
+  pent:    r => { let p=''; for(let i=0;i<5;i++){ const a=-Math.PI/2 + i*Math.PI*2/5; p += (i?'L':'M')+` ${(Math.cos(a)*r*1.1).toFixed(2)} ${(Math.sin(a)*r*1.1).toFixed(2)} `;} return p+'Z'; }
+};
+function symSVG(kind, size, color){
+  const r = size/2 - 1.2;
+  const inner = kind==='station' ? `<circle cx="0" cy="0" r="${(r*.3).toFixed(2)}" fill="${color}"/>`
+    : kind==='square' ? `<path d="M ${-r} 0 H ${r} M 0 ${-r} V ${r}" stroke="${color}" stroke-width="1"/>`
+    : kind==='trig' ? `<circle cx="0" cy="${(r*.12).toFixed(2)}" r="1.5" fill="${color}"/>`
+    : kind==='diamond' ? `<circle cx="0" cy="0" r="1.5" fill="${color}"/>`
+    : kind==='pent' ? `<circle cx="0" cy="0" r="1.5" fill="${color}"/>` : '';
+  return `<svg width="${size}" height="${size}" viewBox="${-size/2} ${-size/2} ${size} ${size}" fill="none" aria-hidden="true">
+    <path d="${SYM_PATH[kind](r)}" stroke="${color}" stroke-width="1.2" fill="none"/>${inner}</svg>`;
+}
+/* canvas versions */
+function drawSym(kind, x, y, r, stroke, fill, lw){
+  ctx.beginPath();
+  if (kind==='station'){ ctx.arc(x,y,r,0,Math.PI*2); }
+  else if (kind==='square'){ ctx.rect(x-r,y-r,r*2,r*2); }
+  else if (kind==='trig'){ ctx.moveTo(x,y-r*1.18); ctx.lineTo(x+r*1.05,y+r*.75); ctx.lineTo(x-r*1.05,y+r*.75); ctx.closePath(); }
+  else if (kind==='hex'){ for(let i=0;i<6;i++){ const a=Math.PI/6+i*Math.PI/3, px=x+Math.cos(a)*r, py=y+Math.sin(a)*r; i?ctx.lineTo(px,py):ctx.moveTo(px,py);} ctx.closePath(); }
+  else if (kind==='pent'){ for(let i=0;i<5;i++){ const a=-Math.PI/2+i*Math.PI*2/5, px=x+Math.cos(a)*r*1.1, py=y+Math.sin(a)*r*1.1; i?ctx.lineTo(px,py):ctx.moveTo(px,py);} ctx.closePath(); }
+  else { ctx.moveTo(x,y-r*1.2); ctx.lineTo(x+r*1.08,y); ctx.lineTo(x,y+r*1.2); ctx.lineTo(x-r*1.08,y); ctx.closePath(); }
+  if (fill){ ctx.fillStyle=fill; ctx.fill(); }
+  ctx.strokeStyle=stroke; ctx.lineWidth=lw; ctx.stroke();
+  /* centre marks */
+  if (kind==='station'){ ctx.beginPath(); ctx.arc(x,y,Math.max(1,r*.3),0,Math.PI*2); ctx.fillStyle=stroke; ctx.fill(); }
+  else if (kind==='square'){ ctx.beginPath(); ctx.moveTo(x-r,y); ctx.lineTo(x+r,y); ctx.moveTo(x,y-r); ctx.lineTo(x,y+r); ctx.lineWidth=lw*.8; ctx.stroke(); }
+  else if (kind==='trig' || kind==='diamond' || kind==='pent'){ ctx.beginPath(); ctx.arc(x,y+(kind==='trig'?r*.12:0),1.3,0,Math.PI*2); ctx.fillStyle=stroke; ctx.fill(); }
+}
+
+/* ---------- intro: the sheet inks itself in ---------- */
+let introStart = 0, intro = REDUCED ? 1 : 0;
+const INTRO_MS = 1500;
+
+/* ---------- label placement ----------
+   Cartographers fan names outward from the body of the drawing and never let
+   one cross another. We try candidate positions in order of how well they
+   point away from the centre of mass, and take the first that is clear.      */
+const LABEL_OFFSETS = [[1,0],[-1,0],[1,-1],[-1,-1],[1,1],[-1,1],[0,-1],[0,1]];
+const LABEL_TRACK = '0.07em';
+let centroid = { x:0, y:0 };
+function recentroid(){
+  const vis = nodes.filter(isOn);
+  if (!vis.length) return;
+  let cx=0, cy=0; vis.forEach(n => { cx+=n.x; cy+=n.y; });
+  centroid.x = cx/vis.length; centroid.y = cy/vis.length;
+}
+const overlaps = (a,b) => a.x < b.x+b.w && a.x+a.w > b.x && a.y < b.y+b.h && a.y+a.h > b.y;
+
+function layoutLabels(){
+  recentroid();
+  /* Measure with the SAME tracking the text is drawn with, or every name is
+     measured narrower than it renders and the collision test lies. */
+  try { ctx.letterSpacing = LABEL_TRACK; } catch(e){}
+  const placed = [];
+  /* a name may not sit on another station's symbol either */
+  for (const n of nodes){
+    if (!isOn(n)) continue;
+    const x=SX(n.x), y=SY(n.y), r=n.r*cam.z + (n.weight>=.95 ? 6 : 3);
+    placed.push({ x:x-r, y:y-r, w:r*2, h:r*2, glyph:n });
+  }
+  const order = nodes.filter(isOn).slice().sort((a,b) => (b.weight - a.weight) || (a.seq - b.seq));
+  for (const n of order){
+    n.lab = null;
+    const shown = lit(n);
+    const big = n.weight >= .95;
+    if (!shown && !big) continue;
+    if (!big && cam.z < .42 && n.weight < .5 && n!==sel && n!==hover) continue;
+    const x = SX(n.x), y = SY(n.y);
+    if (x < -160 || x > W+160 || y < -60 || y > H+60) continue;
+    const size = big ? 11.5 : 10;
+    ctx.font = `${big?600:400} ${size}px 'IBM Plex Mono', monospace`;
+    const text = n.label.toUpperCase();
+    const w = ctx.measureText(text).width;
+    const h = size + 4;
+    const base = n.r*cam.z + (big ? 13 : 9);
+    /* prefer the direction pointing away from the middle of the drawing */
+    const ang = Math.atan2(n.y - centroid.y, n.x - centroid.x);
+    const dirx = Math.cos(ang), diry = Math.sin(ang);
+    const cands = LABEL_OFFSETS.slice().sort((a,b) =>
+      (b[0]*dirx + b[1]*diry*.8) - (a[0]*dirx + a[1]*diry*.8));
+    let best = null;
+    /* try each direction close in, then further out on a leader line */
+    for (const reach of [1, 1.7, 2.6]){
+      for (const [ox,oy] of cands){
+        const gap = base * reach;
+        const lx = x + ox*(gap + (ox ? w/2 : 0));
+        const ly = y + oy*(gap*.72 + h/2);
+        const rect = { x:lx-w/2-3, y:ly-h/2, w:w+6, h:h };
+        if (rect.x < 4 || rect.x+rect.w > W-4) continue;
+        let clash = false;
+        for (const p of placed){
+          if (p.glyph === n) continue;
+          if (overlaps(rect, p)){ clash=true; break; }
+        }
+        if (!clash){ best = { lx, ly, rect, ox, oy, text, size, big, w, h }; break; }
+      }
+      if (best) break;
+    }
+    if (!best && (big || n===sel || n===hover)){
+      const lx = x, ly = y + base + h/2;
+      best = { lx, ly, rect:{x:lx-w/2-3,y:ly-h/2,w:w+6,h:h}, ox:0, oy:1, text, size, big, w, h };
+    }
+    if (best){ n.lab = best; placed.push(best.rect); }
+  }
+  try { ctx.letterSpacing = '0px'; } catch(e){}
+}
+
+/* ---------- render ---------- */
+function render(now){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle = T.ground; ctx.fillRect(0,0,W,H);
+
+  /* --- faint hand-tint washes, one per classification --- */
+  for (const k of CAT_KEYS){
+    if (!on[k]) continue;
+    const mem = nodes.filter(n => n.cat===k);
+    let cx=0, cy=0; mem.forEach(n=>{cx+=n.x;cy+=n.y;}); cx/=mem.length; cy/=mem.length;
+    let rad = 0; mem.forEach(n=>{ rad = Math.max(rad, Math.hypot(n.x-cx, n.y-cy)); });
+    const sx=SX(cx), sy=SY(cy), sr=(rad+58)*cam.z;
+    const g = ctx.createRadialGradient(sx,sy,sr*.25,sx,sy,sr);
+    g.addColorStop(0, hexA(CATS[k].tint, .055*intro));
+    g.addColorStop(1, hexA(CATS[k].tint, 0));
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(sx,sy,sr,0,Math.PI*2); ctx.fill();
+  }
+
+  /* --- graticule --- */
+  const step = 100*cam.z;
+  if (step > 14){
+    ctx.strokeStyle = T.graticule; ctx.lineWidth = 1;
+    ctx.beginPath();
+    const x0 = SX(Math.floor(WX(0)/100)*100);
+    for (let x = x0; x < W; x += step){ ctx.moveTo(Math.round(x)+.5, 0); ctx.lineTo(Math.round(x)+.5, H); }
+    const y0 = SY(Math.floor(WY(0)/100)*100);
+    for (let y = y0; y < H; y += step){ ctx.moveTo(0, Math.round(y)+.5); ctx.lineTo(W, Math.round(y)+.5); }
+    ctx.stroke();
+  }
+
+  /* --- links --- */
+  for (const l of links){
+    const a=l.a, b=l.b;
+    if (!isOn(a) || !isOn(b)) continue;
+    const p = REDUCED ? 1 : clamp((intro - (l.seq/links.length)*.42) / .34);
+    if (p <= 0) continue;
+    const both = lit(a) && lit(b);
+    const focus = (sel && (a===sel||b===sel)) || (!sel && hover && (a===hover||b===hover));
+    const ax=SX(a.x), ay=SY(a.y), bx=SX(b.x), by=SY(b.y);
+    if (Math.max(ax,bx) < -40 || Math.min(ax,bx) > W+40) continue;
+    if (Math.max(ay,by) < -40 || Math.min(ay,by) > H+40) continue;
+    const dx=bx-ax, dy=by-ay, d=Math.hypot(dx,dy)||1, ux=dx/d, uy=dy/d;
+    const ta = a.r*cam.z + 3.5, tb = b.r*cam.z + 3.5;   /* leave a gap at the glyphs */
+    const sx1=ax+ux*ta, sy1=ay+uy*ta;
+    const ex=ax+ux*(d-tb)*p + ux*ta*(1-p), ey=ay+uy*(d-tb)*p + uy*ta*(1-p);
+    let col, al;
+    if (focus){ col = T.accent; al = .95; }
+    else if (!both){ col = T.ink3; al = .13; }
+    else if (l.cross){ col = T.indigo; al = .4; }
+    else { col = T.ink; al = .3; }
+    ctx.strokeStyle = hexA(col, al*intro);
+    ctx.lineWidth = focus ? 1.5 : 1;
+    if (l.cross && !focus){ ctx.setLineDash([4,3]); } else { ctx.setLineDash([]); }
+    ctx.beginPath(); ctx.moveTo(sx1,sy1); ctx.lineTo(ex,ey); ctx.stroke();
+  }
+  ctx.setLineDash([]);
+
+  /* --- stations --- */
+  for (const n of nodes){
+    if (!isOn(n)) continue;
+    const p = REDUCED ? 1 : clamp((intro - .28 - (1-n.weight)*.3) / .26);
+    if (p <= 0) continue;
+    const x=SX(n.x), y=SY(n.y);
+    if (x<-40||x>W+40||y<-40||y>H+40) continue;
+    const shown = lit(n);
+    const isSel = n===sel, isHov = n===hover;
+    const r = Math.max(3, n.r*cam.z) * (REDUCED?1:(.6+.4*p));
+    const stroke = isSel ? T.accent : shown ? T.ink : hexA(T.ink3,.42);
+    ctx.globalAlpha = p;
+    /* hollow = state-held, solid = private counterparty */
+    const fill = n.priv ? (shown ? stroke : hexA(T.ink3,.42)) : T.ground;
+    drawSym(CATS[n.cat].sym, x, y, r, stroke, fill, isSel||isHov ? 1.7 : 1.15);
+    if (n.weight >= .95){                             /* primary station: double ring */
+      ctx.beginPath(); ctx.arc(x,y,r+3.5,0,Math.PI*2);
+      ctx.strokeStyle = hexA(stroke, shown?.55:.2); ctx.lineWidth = 1; ctx.stroke();
+    }
+    if (isSel){
+      ctx.beginPath(); ctx.arc(x,y,r+8,0,Math.PI*2);
+      ctx.strokeStyle = hexA(T.accent,.55); ctx.lineWidth = 1; ctx.setLineDash([2,3]); ctx.stroke(); ctx.setLineDash([]);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  /* --- the trace: a chain run between stations. Drawn under the names so the
+         label halos break it cleanly, the way a chart breaks a line for type. --- */
+  drawTrace();
+
+  /* --- labels --- */
+  const la = REDUCED ? 1 : clamp((intro - .68)/.3);
+  if (la > 0){
+    layoutLabels();
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    try { ctx.letterSpacing = LABEL_TRACK; } catch(e){}
+    for (const n of nodes){
+      const L = n.lab; if (!L) continue;
+      const isSel = n===sel;
+      const shown = lit(n);
+      ctx.globalAlpha = la * (shown ? 1 : .34);
+      /* leader line: glyph edge to the nearest corner of the name, so a name
+         never reads as floating free of the station it belongs to */
+      {
+        const x=SX(n.x), y=SY(n.y);
+        const nx = Math.max(L.rect.x, Math.min(x, L.rect.x + L.rect.w));
+        const ny = Math.max(L.rect.y, Math.min(y, L.rect.y + L.rect.h));
+        const dx=nx-x, dy=ny-y, d=Math.hypot(dx,dy);
+        const r0 = n.r*cam.z + (L.big ? 5 : 2.5);
+        if (d > r0 + 2){
+          ctx.strokeStyle = hexA(isSel ? T.accent : T.ink3, .62);
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(x + dx/d*r0, y + dy/d*r0);
+          ctx.lineTo(nx - dx/d*1.5, ny - dy/d*1.5);
+          ctx.stroke();
+        }
+      }
+      ctx.font = `${L.big?600:400} ${L.size}px 'IBM Plex Mono', monospace`;
+      /* a map label halo: stroke the ground colour around the glyphs so the
+         hairlines break cleanly instead of a visible knockout box */
+      ctx.lineJoin = 'round'; ctx.miterLimit = 2;
+      ctx.lineWidth = 3.4;
+      ctx.strokeStyle = T.ground;
+      ctx.strokeText(L.text, L.lx, L.ly);
+      ctx.fillStyle = isSel ? T.accent : (L.big ? T.ink : T.ink2);
+      ctx.fillText(L.text, L.lx, L.ly);
+      ctx.globalAlpha = 1;
+    }
+    try { ctx.letterSpacing = '0px'; } catch(e){}
+  }
+
+  /* --- index line: what is actually on the sheet right now --- */
+  drawIndex();
+}
+
+/* The carried chain: a bold cinnabar line advancing leg by leg, with a survey
+   mark set at each station as it is reached. */
+function drawTrace(){
+  if (!trace || trace.mode === 'none') return;
+  const legs = activeLegs();
+  ctx.lineCap = 'round';
+  for (const { l, p } of legs){
+    const ax=SX(l.a.x), ay=SY(l.a.y), bx=SX(l.b.x), by=SY(l.b.y);
+    const dx=bx-ax, dy=by-ay, d=Math.hypot(dx,dy)||1, ux=dx/d, uy=dy/d;
+    const t0 = l.a.r*cam.z + 3.5, t1 = l.b.r*cam.z + 3.5;
+    const x0=ax+ux*t0, y0=ay+uy*t0;
+    const len=(d-t0-t1)*p;
+    const x1=x0+ux*len, y1=y0+uy*len;
+    ctx.strokeStyle = hexA(T.accent, .9);
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke();
+    if (p < 1){                           /* the head of the chain */
+      ctx.fillStyle = T.accent;
+      ctx.beginPath(); ctx.arc(x1,y1,2.6,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle = hexA(T.accent,.45); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(x1,y1, 4 + 7*(1-Math.abs(p*2-1)), 0, Math.PI*2); ctx.stroke();
+    }
+  }
+  ctx.lineCap = 'butt';
+  /* set a mark on every station the run has reached */
+  for (const n of trace.involved){
+    if (!isOn(n)) continue;
+    const x=SX(n.x), y=SY(n.y), r=n.r*cam.z;
+    ctx.strokeStyle = hexA(T.accent,.8); ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.arc(x,y,r+5,0,Math.PI*2); ctx.stroke();
+  }
+  /* terminals of a route get a double mark */
+  if (trace.mode === 'route'){
+    const ends = [trace.path[0]];
+    if (trace.done) ends.push(trace.path[trace.path.length-1]);
+    for (const n of ends){
+      const x=SX(n.x), y=SY(n.y), r=n.r*cam.z;
+      ctx.strokeStyle = hexA(T.accent,.55); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(x,y,r+9,0,Math.PI*2); ctx.stroke();
+    }
+  }
+}
+
+/* Ownership is changing hands at some of these; that is the number worth carrying. */
+const IN_MOTION = /IPO|privatis|exclusive right ended|transferred|sold|unbundled|for sale|trust management/i;
+const inMotion = n => IN_MOTION.test(n.status);
+
+/* A survey sheet carries a count, not a decorative scale bar. */
+function drawIndex(){
+  const inset = W>900 ? 40 : 24;
+  const vis = nodes.filter(isOn);
+  const tr  = links.filter(l => isOn(l.a) && isOn(l.b));
+  const moving = vis.filter(inMotion).length;
+  const cross = tr.filter(l => l.cross).length;
+  const txt = `${vis.length} ENTITIES   ·   ${tr.length} LINKS (${cross} BETWEEN SECTORS)   ·   ${moving} OWNERSHIP CHANGING`;
+  ctx.font = `400 9.5px 'IBM Plex Mono', monospace`;
+  ctx.textAlign='center'; ctx.textBaseline='bottom';
+  try { ctx.letterSpacing='0.18em'; } catch(e){}
+  ctx.fillStyle = hexA(T.ink3, .95);
+  ctx.fillText(txt, W/2, H - inset - 4);
+  try { ctx.letterSpacing='0px'; } catch(e){}
+}
+
+function clamp(v){ return v<0?0:v>1?1:v; }
+function hexA(c, a){
+  c = (c||'#000').trim();
+  if (c.startsWith('rgb')){
+    const p = c.match(/[\d.]+/g);
+    return `rgba(${p[0]},${p[1]},${p[2]},${a})`;
+  }
+  const h = c.replace('#','');
+  const v = h.length===3 ? h.split('').map(x=>x+x).join('') : h;
+  return `rgba(${parseInt(v.slice(0,2),16)},${parseInt(v.slice(2,4),16)},${parseInt(v.slice(4,6),16)},${a})`;
+}
+
+/* ---------- loop (redraw only when something is happening) ---------- */
+let dirtyUntil = 0, running = true, lastNow = 0;
+function markDirty(ms){ dirtyUntil = Math.max(dirtyUntil, performance.now() + (ms||260)); }
+function frame(now){
+  requestAnimationFrame(frame);
+  if (!running || W < 2){ lastNow = now; return; }
+  const dt = Math.min(64, lastNow ? now - lastNow : 16);
+  lastNow = now;
+  if (!introStart) introStart = now;
+  if (intro < 1 && !REDUCED) { intro = clamp((now - introStart)/INTRO_MS); markDirty(120); }
+  if (alpha > 0){ tick(); markDirty(120); }
+  if (trace && !trace.done) stepTrace(REDUCED ? 9999 : dt);
+  if (now > dirtyUntil) return;
+  render(now);
+}
+if ('IntersectionObserver' in window){
+  new IntersectionObserver(e => { running = e[0].isIntersecting; if (running) markDirty(400); }, { threshold:.01 }).observe(plate);
+}
+
+/* ---------- hit test + pointer ---------- */
+function nodeAt(sx, sy){
+  const wx=WX(sx), wy=WY(sy);
+  let best=null, bd=Infinity;
+  for (const n of nodes){
+    if (!isOn(n)) continue;
+    const d=Math.hypot(n.x-wx, n.y-wy);
+    const t=Math.max(n.r+8/cam.z, 14/cam.z);
+    if (d<t && d<bd){ best=n; bd=d; }
+  }
+  return best;
+}
+cv.addEventListener('pointerdown', e => {
+  cv.setPointerCapture(e.pointerId);
+  const r=cv.getBoundingClientRect(), sx=e.clientX-r.left, sy=e.clientY-r.top;
+  moved=false;
+  const n=nodeAt(sx,sy);
+  if (n){ drag=n; energise(); }
+  else { panning=true; panFrom={x:e.clientX,y:e.clientY,cx:cam.x,cy:cam.y}; cv.classList.add('grabbing'); }
+});
+cv.addEventListener('pointermove', e => {
+  const r=cv.getBoundingClientRect(), sx=e.clientX-r.left, sy=e.clientY-r.top;
+  if (drag){ moved=true; drag.x=WX(sx); drag.y=WY(sy); energise(); return; }
+  if (panning){
+    moved=true;
+    cam.x = panFrom.cx - (e.clientX-panFrom.x)/cam.z;
+    cam.y = panFrom.cy - (e.clientY-panFrom.y)/cam.z;
+    markDirty(200); return;
+  }
+  const n=nodeAt(sx,sy);
+  if (n!==hover){ hover=n; cv.classList.toggle('pointing', !!n); markDirty(300); }
+});
+function up(e){
+  if (drag && !moved) open(drag);
+  else if (panning && !moved){
+    const r=cv.getBoundingClientRect();
+    if (!nodeAt(e.clientX-r.left, e.clientY-r.top)) close();
+  }
+  drag=null; panning=false; cv.classList.remove('grabbing'); markDirty(300);
+}
+cv.addEventListener('pointerup', up);
+cv.addEventListener('pointercancel', () => { drag=null; panning=false; cv.classList.remove('grabbing'); });
+cv.addEventListener('pointerleave', () => { hover=null; cv.classList.remove('pointing'); markDirty(300); });
+cv.addEventListener('wheel', e => {
+  /* The sheet fills the viewport, so it must not swallow the page scroll.
+     Zoom takes a modifier, the way an embedded map does. */
+  if (!e.ctrlKey && !e.metaKey) return;
+  e.preventDefault();
+  const r=cv.getBoundingClientRect(), sx=e.clientX-r.left, sy=e.clientY-r.top;
+  const wx=WX(sx), wy=WY(sy);
+  cam.z = Math.max(.22, Math.min(3, cam.z*Math.exp(-e.deltaY*.0015)));
+  cam.x = wx-(sx-W/2)/cam.z; cam.y = wy-(sy-H/2)/cam.z;
+  markDirty(220);
+}, { passive:false });
+let pinch=null;
+plate.addEventListener('touchstart', e => {
+  if (e.touches.length===2){ const [a,b]=e.touches; pinch={ d:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY), z:cam.z }; }
+}, { passive:true });
+plate.addEventListener('touchmove', e => {
+  if (pinch && e.touches.length===2){
+    e.preventDefault();
+    const [a,b]=e.touches, d=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);
+    cam.z=Math.max(.22,Math.min(3, pinch.z*(d/pinch.d))); markDirty(200);
+  }
+}, { passive:false });
+plate.addEventListener('touchend', () => { pinch=null; }, { passive:true });
+
+/* ---------- margin note ---------- */
+const np={ el:document.getElementById('np'), sym:document.getElementById('np-sym'), cat:document.getElementById('np-cat'),
+  title:document.getElementById('np-title'), status:document.getElementById('np-status'), deg:document.getElementById('np-deg'),
+  body:document.getElementById('np-body'), rel:document.getElementById('np-rel') };
+function open(n){
+  sel = n;
+  const c = CATS[n.cat];
+  np.sym.innerHTML = symSVG(c.sym, 14, 'currentColor');
+  np.sym.style.color = T.ink2;
+  np.cat.textContent = c.label;
+  np.title.textContent = n.label;
+  np.status.textContent = n.status;
+  np.deg.textContent = String(n.nb.size);
+  np.body.textContent = n.note;
+  const citeEl = document.getElementById('np-cite');
+  if (citeEl) citeEl.textContent = n.cite ? 'Ref. ' + n.cite : '';
+  np.rel.innerHTML = '';
+  [...n.nb].sort((a,b)=>b.weight-a.weight).forEach(m => {
+    const b=document.createElement('button');
+    b.className='rel';
+    b.innerHTML = symSVG(CATS[m.cat].sym, 12, 'currentColor') + '<span>'+m.label+'</span>';
+    b.addEventListener('click', () => go(m));
+    np.rel.appendChild(b);
+  });
+  np.el.classList.add('open');
+  markDirty(400);
+}
+function go(n){
+  if (!on[n.cat]){ on[n.cat]=true; syncLegend(); }
+  open(n);
+  cam.z = Math.max(cam.z, .85);
+  cam.x = n.x + (W>=1080 ? 150/cam.z : 0);
+  cam.y = n.y;
+  markDirty(400);
+}
+function close(){ sel=null; np.el.classList.remove('open'); markDirty(400); }
+document.getElementById('np-close').addEventListener('click', close);
+addEventListener('keydown', e => { if (e.key==='Escape') close(); });
+
+/* ---------- legend ---------- */
+const legend = document.getElementById('legend');
+CAT_KEYS.forEach(k => {
+  const c = CATS[k], count = nodes.filter(n=>n.cat===k).length;
+  const b=document.createElement('button');
+  b.className='lg'; b.dataset.k=k;
+  b.innerHTML = symSVG(c.sym, 13, 'currentColor') + '<span>'+c.label+'</span><span class="ct">'+count+'</span>';
+  b.addEventListener('click', () => {
+    on[k] = !on[k];
+    if (sel && !on[sel.cat]) close();
+    syncLegend(); energise(); fitGraph();
+  });
+  legend.appendChild(b);
+});
+function syncLegend(){ legend.querySelectorAll('.lg').forEach(el => el.classList.toggle('off', !on[el.dataset.k])); }
+/* hollow vs solid is doing real work, so the legend has to say so */
+(function legendKey(){
+  const k = document.createElement('div');
+  k.className = 'legend-key';
+  k.innerHTML = symSVG('station', 12, 'currentColor') + '<span>state-held</span>'
+    + '<svg width="12" height="12" viewBox="-6 -6 12 12" aria-hidden="true">'
+    + '<circle cx="0" cy="0" r="4.8" fill="currentColor"/></svg><span>private</span>';
+  legend.appendChild(k);
+})();
+
+/* ============================================================
+   SEARCH — type to filter, Enter to run a trace.
+   A trace is a survey run: the chain is carried from station to
+   station along real edges, and what it finds is the answer.
+   ============================================================ */
+const find = document.getElementById('find');
+const linkIndex = new Map();
+links.forEach(l => { linkIndex.set(l.a.id+'|'+l.b.id, l); linkIndex.set(l.b.id+'|'+l.a.id, l); });
+const linkOf = (a,b) => linkIndex.get(a.id+'|'+b.id);
+
+/* --- how well a station answers a question ---
+   Questions arrive as English ("how do we price state auctions?"), so the
+   filler words are dropped and what is left is matched on its stem. */
+function terms(q){
+  return q.toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu, ' ').split(/\s+/)
+          .filter(w => w.length > 2 && !STOP.has(w));
+}
+function stem(w){ return w.replace(/(ations|ation|ings|ing|ies|es|s)$/, ''); }
+function score(n, q){
+  if (!q) return 0;
+  const L = n.label.toLowerCase(), N = n.note.toLowerCase(), C = CATS[n.cat].label.toLowerCase();
+  let s = 0;
+  if (L === q) s += 120;
+  else if (L.startsWith(q)) s += 85;
+  else if (L.includes(q)) s += 65;
+  if (C.includes(q)) s += 26;
+  for (const w of terms(q)){
+    const st = stem(w), probe = st.length >= 4 ? st : w;
+    if (L.includes(probe)) s += 30;
+    else if (C.includes(probe)) s += 14;
+    else if (N.includes(probe)) s += 9;
+  }
+  if (s === 0) return 0;                  /* no signal at all is not a match */
+  return s + n.weight * 4;                /* break ties toward primary stations */
+}
+function rank(q){
+  const t = q.trim().toLowerCase();
+  /* a query made only of filler ("the", "a", "how do we") carries no content —
+     without this, substring matching hands back a confident-looking answer */
+  if (!t || !terms(t).length) return [];
+  return nodes.map(n => ({ n, s:score(n,t) })).filter(r => r.s > 0)
+              .sort((a,b) => b.s - a.s).map(r => r.n);
+}
+/* --- fewest traverses between two stations --- */
+function route(a, b){
+  if (a === b) return [a];
+  const prev = new Map([[a,null]]);
+  const q = [a];
+  while (q.length){
+    const c = q.shift();
+    if (c === b) break;
+    for (const nb of c.nb) if (!prev.has(nb)){ prev.set(nb, c); q.push(nb); }
+  }
+  if (!prev.has(b)) return null;
+  const path = []; let c = b;
+  while (c){ path.unshift(c); c = prev.get(c); }
+  return path;
+}
+
+/* --- trace state --- */
+let trace = null;
+
+function parseQuery(raw){
+  const parts = raw.split(/\s*(?:→|->|—>|>|\bvs\b)\s*/i).map(s => s.trim()).filter(Boolean);
+  if (parts.length >= 2) return { mode:'route', a:parts[0], b:parts[1] };
+  return { mode:'ask', a:raw.trim() };
+}
+/* pace the run so a long chain does not crawl and a short one is not a blink */
+function legPace(count){ return Math.max(150, Math.min(420, 1900/Math.max(1,count))); }
+
+function runTrace(raw){
+  const q = (raw !== undefined ? raw : find.value).trim();
+  if (!q){ clearTrace(); return; }
+  const p = parseQuery(q);
+  CAT_KEYS.forEach(k => on[k] = true); syncLegend();   /* a trace may leave its plate */
+  close();
+  query = '';                                          /* the trace supersedes filtering */
+
+  if (p.mode === 'route'){
+    const A = rank(p.a)[0], B = rank(p.b)[0];
+    if (!A || !B){ noResult(p.a && !A ? p.a : p.b); return; }
+    if (A === B){ startInvestigation(p.a); return; }
+    const path = route(A, B);
+    if (!path){ noResult(q); return; }
+    const legs = [];
+    for (let i=0;i<path.length-1;i++) legs.push({ a:path[i], b:path[i+1] });
+    trace = { mode:'route', path, legs, i:0, t:0, done:false, legMs:legPace(legs.length),
+              involved:new Set([path[0]]), terms:[p.a,p.b], log:[] };
+    showFinding();
+    frameNodes(path);
+    markDirty(400);
+    return;
+  }
+  startInvestigation(p.a);
+}
+
+/* ---- a question: find the stations that bear on it, then physically connect
+        them, then say what the connection means ---- */
+const STOP = new Set(('how do we can you what is are the a an of for to in on at by with and or '+
+  'our my your their this that these those it its we us i me does did doing done '+
+  'about into from over under between across through when where which who whom why '+
+  'should would could will shall may might must have has had be been being get got '+
+  'make makes made use uses used work works working problem problems question questions '+
+  'help helps tell show find search look best good better way ways thing things').split(' '));
+
+function startInvestigation(term){
+  const ranked = rank(term);
+  if (!ranked.length){ noResult(term); return; }
+  if (!terms(term.trim().toLowerCase()).length){ noResult(term); return; }
+  const topScore = score(ranked[0], term.trim().toLowerCase());
+  /* keep only stations that genuinely bear on the question */
+  const relevant = ranked.filter(n => score(n, term.trim().toLowerCase()) >= topScore*0.34).slice(0,5);
+  const root = relevant[0];
+
+  /* union of the shortest routes from the strongest match to each other one —
+     this is what "connect those links" means: the sheet draws the connection */
+  const legs = [], seenLeg = new Set(), bridges = new Set();
+  for (const target of relevant.slice(1)){
+    const p = route(root, target);
+    if (!p) continue;
+    for (let i=0;i<p.length-1;i++){
+      const a=p[i], b=p[i+1], k=a.id<b.id?a.id+'|'+b.id:b.id+'|'+a.id;
+      if (seenLeg.has(k)) continue;
+      seenLeg.add(k); legs.push({ a, b });
+      if (!relevant.includes(b)) bridges.add(b);
+    }
+  }
+  /* order the legs so the chain grows outward from the root, never jumping */
+  const depth = new Map([[root,0]]);
+  const q=[root];
+  const adj = new Map();
+  const link2 = (x,y) => { if (!adj.has(x)) adj.set(x,[]); adj.get(x).push(y); };
+  legs.forEach(l => { link2(l.a, l.b); link2(l.b, l.a); });
+  while(q.length){ const c=q.shift();
+    for (const nb of (adj.get(c)||[])) if(!depth.has(nb)){ depth.set(nb, depth.get(c)+1); q.push(nb); } }
+  legs.sort((x,y) => (depth.get(x.a) ?? 99) - (depth.get(y.a) ?? 99));
+
+  /* one station answers it outright — then the useful thing to show is what
+     that station draws on, so run the chain out to its strongest neighbours */
+  let spokes = null;
+  if (!legs.length){
+    spokes = [...root.nb].sort((a,b) => b.weight - a.weight).slice(0,4);
+    for (const nb of spokes){ legs.push({ a:root, b:nb }); bridges.add(nb); }
+  }
+  trace = { mode:'ask', term, relevant, spokes, bridges:[...bridges], root, legs, i:0, t:0,
+            done:false, legMs:legPace(legs.length),
+            involved:new Set([root]), terms:[term], log:[] };
+  logStep(`${nodes.length} stations scanned`);
+  logStep(`${relevant.length} bear on this`);
+  showFinding();
+  frameNodes([...relevant, ...bridges], 1.05);
+  markDirty(400);
+}
+function logStep(s){ if (!trace) return; trace.log.push(s); if (trace.log.length>4) trace.log.shift(); }
+
+function noResult(term){
+  trace = { mode:'none', term, done:true, involved:new Set(), terms:[term] };
+  showFinding();
+  markDirty(400);
+}
+function clearTrace(){
+  trace = null;
+  findEl.classList.remove('open');
+  plate.classList.remove('has-finding');
+  fitGraph();
+  markDirty(400);
+}
+
+/* --- advance the run: one leg of chain at a time, in both modes --- */
+function stepTrace(dt){
+  if (!trace || trace.done || !trace.legs) return;
+  trace.t += dt / (trace.legMs || 400);
+  while (trace.t >= 1 && trace.i < trace.legs.length){
+    const l = trace.legs[trace.i];
+    trace.involved.add(l.b);
+    if (trace.mode === 'ask' && trace.relevant.includes(l.b)) logStep('reached ' + l.b.label);
+    trace.i++; trace.t -= 1;
+    showFinding();
+  }
+  if (trace.i >= trace.legs.length){
+    trace.t = 0; trace.done = true;
+    if (trace.mode === 'ask') logStep('connection closed');
+    showFinding();
+  }
+  markDirty(200);
+}
+/* the legs currently being carried, with their progress 0..1 */
+function activeLegs(){
+  if (!trace || !trace.legs) return [];
+  const out = [];
+  for (let i=0;i<trace.legs.length;i++){
+    if (i < trace.i) out.push({ l:trace.legs[i], p:1 });
+    else if (i === trace.i && !trace.done) out.push({ l:trace.legs[i], p:clamp(trace.t) });
+  }
+  return out;
+}
+
+/* --- the finding it produces --- */
+const fd = { el:findEl, kind:document.getElementById('fd-kind'), stat:document.getElementById('fd-stat'),
+             chain:document.getElementById('fd-chain'), say:document.getElementById('fd-say') };
+function stopBtn(n){
+  const b = document.createElement('button');
+  b.className = 'fd-stop';
+  b.innerHTML = symSVG(CATS[n.cat].sym, 12, 'currentColor') + '<span>'+n.label+'</span>';
+  b.addEventListener('click', () => { if (trace) trace.involved.add(n); go(n); });
+  return b;
+}
+function showFinding(){
+  if (!trace) return;
+  fd.chain.innerHTML = '';
+  if (trace.mode === 'none'){
+    fd.kind.textContent = 'No route';
+    fd.stat.innerHTML = '';
+    fd.say.innerHTML = `Nothing on this sheet matches <em>“${esc(trace.term)}”</em>. Try an entity — Uzbekneftegaz, NEGU, Uzbekistan Railways — or a plate: mining, gas, energy, banking, transport, law.`;
+    fd.el.classList.add('open'); plate.classList.add('has-finding'); fitGraph(); return;
+  }
+  if (trace.mode === 'route'){
+    const path = trace.path, shown = trace.i + 1;
+    const crossings = path.slice(0,-1).filter((n,i) => n.cat !== path[i+1].cat).length;
+    fd.kind.textContent = trace.done ? 'Route found' : 'Tracing';
+    fd.stat.innerHTML = trace.done
+      ? `<b>${path.length-1}</b> traverses · <b>${crossings}</b> between sectors`
+      : `<b>${Math.min(shown,path.length)}</b> of <b>${path.length}</b> stations`;
+    path.slice(0, Math.min(shown, path.length)).forEach((n,i) => {
+      if (i){ const d=document.createElement('span'); d.className='fd-dash'+(path[i-1].cat!==n.cat?' cross':''); fd.chain.appendChild(d); }
+      fd.chain.appendChild(stopBtn(n));
+    });
+    if (trace.done){
+      const a = path[0], b = path[path.length-1];
+      const mids = path.slice(1,-1);
+      fd.say.innerHTML = mids.length
+        ? `<em>${esc(a.label)}</em> reaches <em>${esc(b.label)}</em> through ${mids.length === 1 ? 'one entity' : mids.length+' entities'} — ${mids.map(m=>esc(m.label)).join(', ')}. ${crossings ? `The route crosses ${crossings === 1 ? 'one sector boundary' : crossings+' sector boundaries'} — the two are linked through shared ownership.` : 'It stays inside a single sector.'}`
+        : `<em>${esc(a.label)}</em> and <em>${esc(b.label)}</em> are directly linked — no intermediate entity.`;
+    } else fd.say.textContent = 'Carrying the chain from station to station…';
+    fd.el.classList.add('open'); plate.classList.add('has-finding'); fitGraph(); return;
+  }
+  /* --- a question, answered --- */
+  const { relevant, root } = trace;
+  fd.kind.textContent = trace.done ? 'Answer' : 'Tracing';
+  const shown = trace.spokes ? [root, ...trace.spokes] : relevant;
+  fd.stat.innerHTML = trace.done
+    ? '<b>'+relevant.length+'</b> station'+(relevant.length===1?' bears':'s bear')+' on this · <b>'+trace.legs.length+'</b> traverses'
+    : '<b>'+trace.involved.size+'</b> of <b>'+(trace.legs.length+1)+'</b> reached';
+  shown.forEach((n,i) => {
+    if (i){ const d=document.createElement('span'); d.className='fd-dash'+(shown[i-1].cat!==n.cat?' cross':''); fd.chain.appendChild(d); }
+    const b = stopBtn(n);
+    if (!trace.involved.has(n)) b.style.opacity = '.35';
+    fd.chain.appendChild(b);
+  });
+  fd.say.innerHTML = trace.done ? answerText(trace)
+    : '<span class="fd-log">' + trace.log.map(esc).join('<br>') + '</span>';
+  fd.el.classList.add('open');
+  plate.classList.add('has-finding');
+  fitGraph();
+}
+
+/* Compose the answer out of what the traverse actually found. */
+function firstSentence(t){
+  const m = t.match(/^(.{20,190}?[.;—])\s/);
+  return (m ? m[1] : t.slice(0,180)).replace(/[.;—]$/, '');
+}
+function listOf(a){
+  if (a.length === 1) return a[0];
+  if (a.length === 2) return a[0] + ' and ' + a[1];
+  return a.slice(0,-1).join(', ') + ' and ' + a[a.length-1];
+}
+function answerText(tr){
+  const { relevant, bridges, root } = tr;
+  const out = [];
+  out.push('<em>' + esc(root.label) + '</em> — ' + esc(root.status.toLowerCase()) + '. '
+    + esc(firstSentence(root.note)) + '.');
+  if (tr.spokes && tr.spokes.length){
+    out.push('It is linked to ' + listOf(tr.spokes.map(n => '<em>' + esc(n.label) + '</em>')) + '.');
+  } else {
+    const others = relevant.slice(1);
+    if (others.length){
+      const via = bridges.filter(b => !relevant.includes(b)).slice(0,3);
+      out.push('It connects to ' + listOf(others.map(n => '<em>' + esc(n.label) + '</em>'))
+        + (via.length ? ' through ' + listOf(via.map(n => esc(n.label))) : '') + '.');
+    }
+  }
+  const all = tr.spokes ? [root, ...tr.spokes] : relevant;
+  const moving = all.filter(inMotion);
+  if (moving.length) out.push(listOf(moving.map(n => esc(n.label) + ' (' + esc(n.status.toLowerCase()) + ')'))
+      + (moving.length===1 ? ' has' : ' have') + ' a change of ownership recorded.');
+  const privs = all.filter(n => n.priv);
+  if (privs.length) out.push('Private counterpart' + (privs.length===1?'y: ':'ies: ')
+      + listOf(privs.map(n => esc(n.label))) + '.');
+  const plates = [...new Set(all.map(n => CATS[n.cat].label))];
+  if (plates.length > 1) out.push('This runs across ' + plates.length + ' sectors — '
+      + plates.map(esc).join(', ') + '.');
+  return out.join(' ');
+}
+function esc(t){ return String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* --- wiring --- */
+find.addEventListener('input', () => {
+  if (trace) clearTrace();
+  query = find.value.trim().toLowerCase();
+  markDirty(400);
+});
+find.addEventListener('keydown', e => {
+  if (e.key === 'Enter'){ e.preventDefault(); runTrace(); }
+  if (e.key === 'Escape'){ find.value=''; query=''; clearTrace(); }
+});
+document.getElementById('ask-form').addEventListener('submit', e => { e.preventDefault(); runTrace(); });
+document.getElementById('fd-close').addEventListener('click', () => { clearTrace(); find.value=''; query=''; markDirty(300); });
+document.querySelectorAll('.cartouche .try').forEach(b => {
+  b.addEventListener('click', () => {
+    const q = b.dataset.q.replace(/&rarr;/g,'→');
+    find.value = q; runTrace(q);
+  });
+});
+
+/* ---------- tools ---------- */
+document.getElementById('zin').addEventListener('click', () => { cam.z=Math.min(3,cam.z*1.3); markDirty(240); });
+document.getElementById('zout').addEventListener('click', () => { cam.z=Math.max(.22,cam.z/1.3); markDirty(240); });
+document.getElementById('reset').addEventListener('click', () => {
+  close(); find.value=''; query='';
+  CAT_KEYS.forEach(k=>on[k]=true); syncLegend();
+  reseed();
+  nodes.forEach(n => { n.x=n.ax+(rnd()-.5)*200; n.y=n.ay+(rnd()-.5)*200; n.vx=n.vy=0; });
+  settle(700); fitGraph(); markDirty(400);
+});
+
+/* ---------- boot ---------- */
+resize();
+requestAnimationFrame(frame);
+/* type metrics decide the layout, so refit once the real faces have loaded */
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { fitGraph(); markDirty(600); });
+
+
+/* ---------- library shelf ---------- */
+const PAPERS = [
+  {
+    file: 'papers/uzbekistan-soe-landscape.pdf',
+    title: 'Uzbekistan’s SOE Landscape Across Key Sectors and Their Role in the Economy',
+    by: 'Shahriyor Amirov · Independent researcher',
+    year: '2026',
+    pages: '10 pages',
+    kind: 'Working paper',
+    abs: 'Gathering cases and evidence from IMF and World Bank reporting, government resolutions, and local news coverage of individual transactions, this research analyses the role of major state-owned enterprises in the economy and their current condition. It covers mining and metals, hydrocarbons and chemicals, energy, banking and financial markets, and transport and infrastructure, alongside the legal instruments that govern state participation.'
+  }
+];
+const shelf = document.getElementById('shelf');
+PAPERS.forEach(p => {
+  const a = document.createElement('a');
+  a.className = 'paper rv';
+  a.href = p.file;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.innerHTML =
+    '<div class="paper-thumb">' +
+      '<span class="tt">' + p.title + '</span>' +
+      '<i style="width:100%"></i><i style="width:92%"></i><i style="width:97%"></i>' +
+      '<i style="width:64%"></i><i style="width:0;height:6px"></i>' +
+      '<i style="width:88%"></i><i style="width:95%"></i><i style="width:78%"></i>' +
+      '<i style="width:93%"></i><i style="width:46%"></i>' +
+      '<span class="pg"><span>PDF</span><span>' + p.year + '</span></span>' +
+    '</div>' +
+    '<div>' +
+      '<div class="paper-meta"><span>' + p.kind + '</span><span>' + p.year + '</span><span>' + p.pages + '</span></div>' +
+      '<h3>' + p.title + '</h3>' +
+      '<p class="by">' + p.by + '</p>' +
+      '<p class="abs">' + p.abs + '</p>' +
+      '<span class="open">Read the paper <i></i></span>' +
+    '</div>';
+  shelf.appendChild(a);
+});
+
+/* reveal */
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold:.1, rootMargin:'0px 0px -6% 0px' });
+document.querySelectorAll('.rv').forEach((el,i) => {
+  el.style.transitionDelay = `${(i%6)*50}ms`;
+  io.observe(el);
+});
+/* ---------- nav menu ---------- */
+const menuBtn = document.getElementById('menu-btn');
+const navMenu = document.getElementById('navmenu');
+function setMenu(open){
+  navMenu.hidden = !open;
+  menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+menuBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  setMenu(navMenu.hidden);
+});
+navMenu.addEventListener('click', e => { if (e.target.closest('.navmenu-item')) setMenu(false); });
+document.addEventListener('click', e => {
+  if (!navMenu.hidden && !navMenu.contains(e.target) && e.target !== menuBtn) setMenu(false);
+});
+addEventListener('keydown', e => { if (e.key === 'Escape' && !navMenu.hidden) setMenu(false); });
+
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
